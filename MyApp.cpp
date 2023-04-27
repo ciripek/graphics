@@ -6,7 +6,7 @@
 #include <array>
 #include <list>
 #include <tuple>
-#include <imgui/imgui.h>
+#include <imgui.h>
 #include "includes/GLUtils.hpp"
 
 CMyApp::CMyApp(void)
@@ -301,7 +301,7 @@ void CMyApp::Render()
 	//			   ahol az X piros, az Y zöld a Z pedig kék!
 
 	//ImGui Testwindow
-	ImGui::ShowTestWindow();
+	ImGui::ShowDemoWindow();
 }
 
 void CMyApp::KeyboardDown(SDL_KeyboardEvent& key)

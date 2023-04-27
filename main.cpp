@@ -6,8 +6,10 @@
 #include <SDL_opengl.h>
 
 // ImGui
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl_gl3.h>
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_sdl2.h>
+
 
 // standard
 #include <iostream>
@@ -134,8 +136,20 @@ int main( int argc, char* args[] )
 		glDebugMessageCallback(GLDebugMessageCallback, nullptr);
 	}
 
-	//Imgui init
-	ImGui_ImplSdlGL3_Init(win);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsLight();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplSDL2_InitForOpenGL(win, context);
+    ImGui_ImplOpenGL3_Init("#version 460");
 
 	//
 	// 4. lépés: indítsuk el a fő üzenetfeldolgozó ciklust
@@ -164,7 +178,7 @@ int main( int argc, char* args[] )
 			// amíg van feldolgozandó üzenet dolgozzuk fel mindet:
 			while (SDL_PollEvent(&ev))
 			{
-				ImGui_ImplSdlGL3_ProcessEvent(&ev);
+                ImGui_ImplSDL2_ProcessEvent(&ev);
 				bool is_mouse_captured = ImGui::GetIO().WantCaptureMouse; //kell-e az imgui-nak az egér
 				bool is_keyboard_captured = ImGui::GetIO().WantCaptureKeyboard;	//kell-e az imgui-nak a billentyűzet
 				switch (ev.type)
@@ -207,11 +221,15 @@ int main( int argc, char* args[] )
 				}
 
 			}
-			ImGui_ImplSdlGL3_NewFrame(win); //Ezután lehet imgui parancsokat hívni, egészen az ImGui::Render()-ig
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplSDL2_NewFrame();
+            ImGui::NewFrame(); //Ezután lehet imgui parancsokat hívni, egészen az ImGui::Render()-ig
 
 			app.Update();
 			app.Render();
-			ImGui::Render();
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 			SDL_GL_SwapWindow(win);
 		}
@@ -223,8 +241,11 @@ int main( int argc, char* args[] )
 	//
 	// 5. lépés: lépjünk ki
 	// 
-	ImGui_ImplSdlGL3_Shutdown();
-	SDL_GL_DeleteContext(context);
+	ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow( win );
 
 	return 0;
