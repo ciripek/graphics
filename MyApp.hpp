@@ -46,13 +46,38 @@ public:
 	void Resize(int, int);
 
 protected:
+	// shaderekhez szükséges változók
+	ProgramObject		m_program;			// mesh shader
+
+	VertexArrayObject	m_CubeVao;			// VAO
+	IndexBuffer			m_CubeIndices;		// index buffer
+	ArrayBuffer			m_CubeVertexBuffer;	// VBO		
+
 	gCamera				m_camera;
+
 
 	struct Vertex
 	{
 		glm::vec3 p;
-		glm::vec3 n;
-		glm::vec2 t;
 	};
+
+	struct feny{
+		glm::vec3 p, c;
+	};
+
+	struct anyag
+	{
+		glm::vec3 ambient, diffuse, specular;
+		float shininess;
+	};
+
+	GLint cam1 = 0, cam2 = 0, cam3 = 0, aspect_ratio = 0, res_loc = 0;
+	float aspect = 640.f / 480.f;
+	glm::vec2 res = { 640.f, 480.f };
+	// mesh adatok
+
+	// a jobb olvashatóság kedvéért
+	void InitShaders();
+	void InitCube();
 };
 
