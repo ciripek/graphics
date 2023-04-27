@@ -66,9 +66,9 @@ using IsValidBaseType = std::enable_if_t<
 
 */
 
-template <typename T> constexpr GLenum NativeTypeToOpenGLType() { static_assert(true, "Non-supported vertex attribute type"); return 0;}
-template <> constexpr GLenum NativeTypeToOpenGLType<float>() { return GL_FLOAT; }
-template <> constexpr GLenum NativeTypeToOpenGLType<double>() { return GL_DOUBLE; }
+template <typename T> consteval GLenum NativeTypeToOpenGLType() { static_assert(true, "Non-supported vertex attribute type"); return 0;}
+template <> consteval GLenum NativeTypeToOpenGLType<float>() { return GL_FLOAT; }
+template <> consteval GLenum NativeTypeToOpenGLType<double>() { return GL_DOUBLE; }
 
 // we have to provide these extraction functions because tvec<*,*>::length(), cols(), rows() are not defined as a constexpr...
 template<typename T>	constexpr std::pair<size_t, size_t> ComponentCount() { return std::make_pair(1, 1); }

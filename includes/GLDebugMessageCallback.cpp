@@ -144,17 +144,4 @@ void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     // print OpenGL message
     printf("OpenGL debug message [%d], type: %s, severity: %s, source: %s, message:\n%s\n\n",
         id, _type, _severity, _source, msg);
-
-    // Add __debugbreak if _DEBUG is defined (automatic in visual studio)
-    // note: __debugbreak is specific for MSVC, won't work with gcc/clang
-    // -> in that case remove it and manually set breakpoints
-#ifdef _DEBUG
-    // Ha itt megállt a program, akkor valamilyen OpenGL hiba történt.
-    // 1. A console-on található a hibaüzenet.
-    // 2. A Call Stack segítségével megkereshető a hibát kiváltó OpenGL művelet
-    //     (a nyíl a hibát jelző utasítást követő sorra mutat!).
-    // 3. A program innen folytatható (zöld háromszög - Continue / F5)
-    //     vagy megállítható (piros négyzet - Stop / Shift + F5).
-    __debugbreak();
-#endif
 }
