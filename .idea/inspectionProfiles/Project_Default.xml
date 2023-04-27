@@ -1,0 +1,13 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ClangTidy" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="clangTidyChecks" value="-*,mpi-buffer-deref,mpi-type-mismatch,openmp-use-default-none,google-*,hicpp-*,misc-*,readability-*,modernize-*,cppcoreguidelines-*,llvm-*,performance-*,bugprone-*,portability-*,cert-*,clang-analyzer-*" />
+    </inspection_tool>
+    <inspection_tool class="Clazy" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="clazyChecks" value="level2" />
+    </inspection_tool>
+    <inspection_tool class="Misra" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OCInconsistentNaming" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  </profile>
+</component>
