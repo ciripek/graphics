@@ -1,6 +1,7 @@
-﻿#include <GL/glew.h>
+﻿#include "TextureObject.h"
+
+#include <GL/glew.h>
 #include <GL/gl.h>
-#include "TextureObject.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
