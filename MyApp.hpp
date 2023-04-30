@@ -23,7 +23,7 @@
 #include "includes/TextureObject.h"
 
 // mesh
-#include "includes/ObjParser_OGL3.h"
+#include "includes/ObjParser.hpp"
 
 class CMyApp
 {
