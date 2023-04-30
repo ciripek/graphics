@@ -19,8 +19,8 @@ void Mesh::initBuffers() {
     glBindVertexArray(vertexArrayObject);
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(vertex) * vertices.size()),
-                 static_cast<GLvoid *>(vertices.data()), GL_STREAM_DRAW);
+    glBufferStorage(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(vertex) * vertices.size()),
+                 static_cast<GLvoid *>(vertices.data()), 0);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex),
@@ -33,8 +33,8 @@ void Mesh::initBuffers() {
                           reinterpret_cast<GLvoid *>(offsetof(vertex, texcoord)));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(GLuint) * indices.size()),
-                 static_cast<GLvoid *>(indices.data()), GL_STREAM_DRAW);
+    glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(GLuint) * indices.size()),
+                 static_cast<GLvoid *>(indices.data()), 0);
 
     glBindVertexArray(0);
 
