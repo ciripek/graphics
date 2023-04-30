@@ -4,41 +4,40 @@
 // http://sourceforge.net/projects/objloader/
 
 #include <fstream>
-#include <vector>
-#include <map>
 #include <glm/glm.hpp>
+#include <map>
+#include <vector>
 
 #include "Mesh.hpp"
 
-class ObjParser
+class ObjParser final
 {
 public:
 	static Mesh* parse(const char* fileName);
 
-	enum Exception { EXC_FILENOTFOUND };
 private:
-	struct IndexedVert {
+	struct indexedVert {
 		int v, vt, vn;
-		IndexedVert(int _v, int _vt, int _vn) : v(_v), vt(_vt), vn(_vn) {};
-		bool operator<(const IndexedVert& rhs) const { 
+		indexedVert(int v, int vt, int vn) : v(v), vt(vt), vn(vn) {};
+		bool operator<(const indexedVert& rhs) const {
 			return v<rhs.v || (v == rhs.v && (vt<rhs.vt || (vt == rhs.vt && vn<rhs.vn)));
 		}
 	};
 		
-	ObjParser(void) : mesh(0), nIndexedVerts(0) {}
+	ObjParser() = default;
 
 	bool processLine();
 	bool skipCommentLine();
 	void skipLine();
-	void addIndexedVertex(const IndexedVert& vertex);
+	void addIndexedVertex(const indexedVert& vertex);
 
-	Mesh* mesh;
+	Mesh* mesh = nullptr;
 	std::ifstream ifs;
 
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
 
-	unsigned int nIndexedVerts;
-	std::map<IndexedVert, unsigned int> vertexIndices;
+	unsigned int nIndexedVerts = 0;
+	std::map<indexedVert, unsigned int> vertexIndices;
 };

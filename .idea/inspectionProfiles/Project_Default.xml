@@ -2,7 +2,7 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="ClangTidy" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="clangTidyChecks" value="*,-abseil-*,-altera-*,-android-*,-boost-*,-concurrency-*,-darwin-*,-fuchsia-*,-linuxkernel-*,-llvmlibc-*,-objc-*,-zircon-*,-modernize-use-trailing-return-type,-openmp-*,openmp-use-default-none" />
+      <option name="clangTidyChecks" value="*,-abseil-*,-altera-*,-android-*,-boost-*,-concurrency-*,-darwin-*,-fuchsia-*,-linuxkernel-*,-llvmlibc-*,-objc-*,-zircon-*,-modernize-use-trailing-return-type,-openmp-*,openmp-use-default-none,-readability-isolate-declaration" />
     </inspection_tool>
     <inspection_tool class="Clazy" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="clazyChecks" value="level2" />
