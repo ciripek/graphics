@@ -24,17 +24,15 @@ public:
     DSAMesh &operator=(DSAMesh &&) = default;
 
     void initBuffers();
-    void draw();
+    void draw() const;
 
     void addVertex(const vertex &vertex) {
         vertices.push_back(vertex);
     }
 
-    void addIndex(unsigned int index) {
+    void addIndex(GLuint index) {
         indices.push_back(index);
     }
-
-    static DSAMesh* load(const std::string& file_name);
 
 private:
     GLuint vertexArrayObject{};
@@ -45,6 +43,4 @@ private:
     std::vector<GLuint> indices;
 
     bool inited = false;
-
-    void loadModel(const std::string& file_name);
 };

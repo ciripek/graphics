@@ -12,7 +12,7 @@ file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/includes/*.cpp
         ${PROJECT_SOURCE_DIR}/includes/*.hpp
         ${PROJECT_SOURCE_DIR}/includes/*.inl)
 
-set(EXTERNAL IMGUI SDL2 SDL2_image fmt)
+set(EXTERNAL IMGUI SDL2 SDL2_image fmt assimp)
 
 add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${EXTERNAL})

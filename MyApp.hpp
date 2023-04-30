@@ -17,12 +17,13 @@
 
 #include "includes/gCamera.h"
 
-#include "includes/ProgramObject.h"
 #include "includes/BufferObject.h"
-#include "includes/VertexArrayObject.h"
+#include "includes/ProgramObject.h"
 #include "includes/TextureObject.h"
+#include "includes/VertexArrayObject.h"
 
 // mesh
+#include "includes/Model.hpp"
 #include "includes/ObjParser.hpp"
 
 class CMyApp
@@ -45,8 +46,12 @@ public:
 	void MouseWheel(SDL_MouseWheelEvent&);
 	void Resize(int, int);
 
-protected:
+private:
 	gCamera				m_camera;
+
+    Model model {"assets/Suzanne.obj"};
+    Texture2D m_suzanneTexture;
+    ProgramObject m_program;
 
 	struct Vertex
 	{

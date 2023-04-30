@@ -13,7 +13,7 @@ DSAMesh::~DSAMesh() {
     }
 }
 
-void DSAMesh::initBuffers() {
+void DSAMesh::initBuffers(){
     glCreateBuffers(1, &vertexBuffer);
     glNamedBufferStorage(vertexBuffer, sizeof(vertex) * vertices.size(), vertices.data(), 0);
 
@@ -39,7 +39,7 @@ void DSAMesh::initBuffers() {
 
 }
 
-void DSAMesh::draw() {
+void DSAMesh::draw() const{
     glBindVertexArray(vertexArrayObject);
 
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);

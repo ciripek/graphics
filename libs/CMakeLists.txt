@@ -3,6 +3,7 @@ add_library(IMGUI STATIC)
 add_subdirectory("sdl2")
 add_subdirectory("sdl2_image")
 add_subdirectory("fmt")
+add_subdirectory("assimp")
 
 target_sources(IMGUI
         PRIVATE
