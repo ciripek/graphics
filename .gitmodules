@@ -1,17 +1,6 @@
 [submodule "libs/imgui"]
 	path = libs/imgui
 	url = https://github.com/ocornut/imgui
-[submodule "libs/sdl2"]
-	path = libs/sdl2
-	url = https://github.com/libsdl-org/SDL
-	branch = SDL2
-[submodule "libs/sdl2_image"]
-	path = libs/sdl2_image
-	url = https://github.com/libsdl-org/SDL_image
-	branch = SDL2
 [submodule "libs/fmt"]
 	path = libs/fmt
 	url = https://github.com/fmtlib/fmt
-[submodule "libs/assimp"]
-	path = libs/assimp
-	url = https://github.com/assimp/assimp

@@ -1,9 +1,8 @@
 add_library(IMGUI STATIC)
 
-add_subdirectory("sdl2")
-add_subdirectory("sdl2_image")
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 add_subdirectory("fmt")
-add_subdirectory("assimp")
 
 target_sources(IMGUI
         PRIVATE
@@ -21,9 +20,9 @@ target_sources(IMGUI
 target_include_directories(IMGUI
         PUBLIC imgui
         PUBLIC imgui/backends
-        PRIVATE SDL2
-        PRIVATE SDL2_image
+        PRIVATE ${SDL2_INCLUDE_DIRS}
+        PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS}
         )
 
-target_link_libraries(IMGUI SDL2 SDL2_image)
+target_link_libraries(IMGUI ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
