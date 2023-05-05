@@ -22,9 +22,9 @@ bool CMyApp::Init() {
 
 
     m_program.AttachShaders({
-                                    {GL_VERTEX_SHADER,   "myVert.vert"},
-                                    {GL_FRAGMENT_SHADER, "myFrag.frag"}
-                            });
+        {GL_VERTEX_SHADER,   "myVert.vert"},
+        {GL_FRAGMENT_SHADER, "myFrag.frag"}
+    });
 
     m_program.LinkProgram();
 
