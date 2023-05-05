@@ -1,6 +1,7 @@
 ﻿#include "MyApp.hpp"
 
 #include <imgui.h>
+
 #include "includes/GLUtils.hpp"
 
 CMyApp::CMyApp() {
@@ -10,6 +11,15 @@ CMyApp::CMyApp() {
 CMyApp::~CMyApp(void) = default;
 
 bool CMyApp::Init() {
+    //const ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert", shaderType::VERTEX);
+    //vertex.getUniforms();
+
+    std::string test = R"(
+#version 330 core
+void main() {}
+)";
+    const char* source = test.c_str();
+    GLuint t = glCreateShaderProgramv(GL_VERTEX_SHADER, test.length(), &source);
 
     glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
 
@@ -18,9 +28,9 @@ bool CMyApp::Init() {
 
 
     m_program.AttachShaders({
-        {GL_VERTEX_SHADER,   "myVert.vert"},
-        {GL_FRAGMENT_SHADER, "myFrag.frag"}
-    });
+                                    {GL_VERTEX_SHADER,   "myVert.vert"},
+                                    {GL_FRAGMENT_SHADER, "myFrag.frag"}
+                            });
 
     m_program.LinkProgram();
 

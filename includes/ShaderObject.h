@@ -1,19 +1,20 @@
 ﻿#pragma once
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
+#include <filesystem>
 #include <string>
 #include <utility>
+
 
 #include "GLconversions.hpp"
 
 class ShaderObject final
 {
 public:
-	ShaderObject(GLenum pType);
+	explicit ShaderObject(GLenum pType);
 	ShaderObject(GLenum pType, const std::string&);
-	ShaderObject(const TypeSourcePair& pInfo) : ShaderObject(pInfo.first, pInfo.second) {}
+	explicit ShaderObject(const TypeSourcePair& pInfo) : ShaderObject(pInfo.first, pInfo.second) {}
 
 	~ShaderObject();
 
@@ -25,10 +26,10 @@ public:
 
 	operator unsigned int() const { return m_id; }
 
-	bool FromFile(GLenum _shaderType, const char* _filename);
-	bool FromMemory(GLenum _shaderType, const std::string& _source);
+	bool FromFile(const std::filesystem::path &fileName) const;
+	bool FromMemory(const std::string &_source) const;
 private:
-	GLuint	CompileShaderFromMemory(const GLuint _shaderObject, const std::string& _source);
+	static GLuint	CompileShaderFromMemory(GLuint _shaderObject, const std::string& _source);
 
 	GLuint	m_id;
 };

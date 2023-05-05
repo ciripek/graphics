@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 core
 
 // VBO-ból érkező változók
 layout(location = 0) in vec3 vs_in_pos;
@@ -6,14 +6,14 @@ layout(location = 1) in vec3 vs_in_norm;
 layout(location = 2) in vec2 vs_in_tex;
 
 // a pipeline-ban tovább adandó értékek
-out vec3 vs_out_pos;
-out vec3 vs_out_norm;
-out vec2 vs_out_tex;
+layout(location = 0) out vec3 vs_out_pos;
+layout(location = 1) out vec3 vs_out_norm;
+layout(location = 2) out vec2 vs_out_tex;
 
 // shader külső paraméterei
-uniform mat4 MVP;
-uniform mat4 world;
-uniform mat4 worldIT;
+layout(location = 0) uniform mat4 MVP;
+layout(location = 1) uniform mat4 world;
+layout(location = 2) uniform mat4 worldIT;
 
 void main()
 {

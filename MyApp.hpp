@@ -25,6 +25,7 @@
 // mesh
 #include "includes/Model.hpp"
 #include "includes/ObjParser.hpp"
+#include "includes/ShaderProgram.hpp"
 
 class CMyApp
 {
@@ -53,7 +54,7 @@ private:
     Texture2D m_suzanneTexture;
     ProgramObject m_program;
 
-	struct Vertex
+    struct Vertex
 	{
 		glm::vec3 p;
 		glm::vec3 n;

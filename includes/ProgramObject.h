@@ -5,10 +5,10 @@
 
 #include "ShaderObject.h"
 
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include <array>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include <initializer_list>
 #include <utility>
