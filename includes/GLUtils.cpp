@@ -283,7 +283,7 @@ bool errorLink(GLuint program) {
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         auto errorMessage = std::make_unique<char[]>(infoLogLength);
-        glGetShaderInfoLog(program, infoLogLength, nullptr, errorMessage.get());
+        glGetProgramInfoLog(program, infoLogLength, nullptr, errorMessage.get());
 
         fmt::println("Linker error: {}\n{}", infoLogLength, errorMessage.get());
 

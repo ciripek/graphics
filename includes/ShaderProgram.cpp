@@ -1,6 +1,11 @@
 #include "ShaderProgram.hpp"
 
+#include <GL/glew.h>
+
 #include <fmt/ranges.h>
+#include <memory>
+#include <string>
+#include <vector>
 
 ShaderProgram::~ShaderProgram() {
     glDeleteProgram(m_id);
@@ -12,15 +17,9 @@ ShaderProgram ShaderProgram::fromGLSL(const std::filesystem::path &path, shaderT
     if (!fileOpt){
         return  {0, type};
     }
-    const std::string& file = *fileOpt;
-    const char* source = file.c_str();
+    const char* source = fileOpt->c_str();
 
-#if 1
-    const GLuint id = glCreateShaderProgramv(static_cast<GLenum>(type), file.size(), &source);
-#else
-    const GLuint  id = 0;
-#endif
-    fmt::println("ss");
+    const GLuint id = glCreateShaderProgramv(static_cast<GLenum>(type), 1, &source);
 
     if (id == 0){
         return {0, type};
@@ -78,7 +77,7 @@ ShaderProgram ShaderProgram::fromSPIRV(const std::filesystem::path &path, shader
     return {program, type};
 }
 
-void ShaderProgram::getUniforms() {
+void ShaderProgram::cacheUniforms() const {
     GLint uniform_count = 0;
     glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &uniform_count);
 
@@ -115,6 +114,19 @@ void ShaderProgram::getUniforms() {
 
 shaderType ShaderProgram::getType() const {
     return type;
+}
+
+shaderType ShaderProgram::getTypeFromFile(const std::filesystem::path &path) {
+    const std::filesystem::path ext = path.extension();
+
+    if (ext == ".vert") return shaderType::VERTEX;
+    if (ext == ".frag") return shaderType::FRAGMENT;
+    if (ext == ".geom") return shaderType::GEOMETRY;
+    if (ext == ".tesc") return shaderType::TESS_CONTROL;
+    if (ext == ".tese") return shaderType::TESS_EVALUATION;
+    if (ext == ".comp") return shaderType::COMPUTER;
+    if (ext == ".spv") return getTypeFromFile(path.stem());
+    assert(false);
 }
 
 

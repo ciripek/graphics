@@ -6,14 +6,24 @@ layout(location = 1) in vec3 vs_in_norm;
 layout(location = 2) in vec2 vs_in_tex;
 
 // a pipeline-ban tovább adandó értékek
-layout(location = 0) out vec3 vs_out_pos;
-layout(location = 1) out vec3 vs_out_norm;
-layout(location = 2) out vec2 vs_out_tex;
+layout(location = 0) out outVertexData{
+	vec3 vs_out_pos;
+	vec3 vs_out_norm;
+	vec2 vs_out_tex;
+};
+
+
+out gl_PerVertex
+{
+	vec4 gl_Position;
+};
+
 
 // shader külső paraméterei
 layout(location = 0) uniform mat4 MVP;
 layout(location = 1) uniform mat4 world;
 layout(location = 2) uniform mat4 worldIT;
+
 
 void main()
 {

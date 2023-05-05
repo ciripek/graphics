@@ -1,9 +1,11 @@
 #version 460 core
 
 // pipeline-ból bejövő per-fragment attribútumok
-layout(location = 0) in vec3 vs_out_pos;
-layout(location = 1) in vec3 vs_out_norm;
-layout(location = 2) in vec2 vs_out_tex;
+layout(location = 0) in outVertexData{
+	vec3 vs_out_pos;
+	vec3 vs_out_norm;
+	vec2 vs_out_tex;
+};
 
 out vec4 fs_out_col;
 

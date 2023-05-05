@@ -14,7 +14,15 @@
 class ShaderProgram {
 public:
     static ShaderProgram fromGLSL(const std::filesystem::path &path, shaderType type);
+    static ShaderProgram fromGLSL(const std::filesystem::path &path){
+        return fromGLSL(path, getTypeFromFile(path));
+    }
+
     static ShaderProgram fromSPIRV(const std::filesystem::path &path, shaderType type);
+    static ShaderProgram fromSPIRV(const std::filesystem::path &path){
+        return fromSPIRV(path, getTypeFromFile(path));
+    }
+
     ~ShaderProgram();
 
     bool isValid() const { return m_id != 0;}
@@ -22,7 +30,7 @@ public:
     explicit operator GLuint() const { return m_id; }
     shaderType getType() const;
 
-    void getUniforms();
+    void cacheUniforms() const;
 private:
 
     struct uniform_info
@@ -31,10 +39,11 @@ private:
         GLsizei count;
     };
 
-    std::unordered_map<std::string, uniform_info> uniforms;
+    mutable std::unordered_map<std::string, uniform_info> uniforms;
     GLuint	m_id = 0;
 
     shaderType type;
 
     ShaderProgram(GLuint m_id, shaderType type): m_id(m_id), type(type) {}
+    static shaderType getTypeFromFile(const std::filesystem::path &path);
 };

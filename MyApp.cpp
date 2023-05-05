@@ -8,18 +8,12 @@ CMyApp::CMyApp() {
     m_camera.SetView(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
 
-CMyApp::~CMyApp(void) = default;
+CMyApp::~CMyApp() = default;
 
 bool CMyApp::Init() {
-    //const ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert", shaderType::VERTEX);
-    //vertex.getUniforms();
-
-    std::string test = R"(
-#version 330 core
-void main() {}
-)";
-    const char* source = test.c_str();
-    GLuint t = glCreateShaderProgramv(GL_VERTEX_SHADER, test.length(), &source);
+    ShaderProgram vertex = ShaderProgram::fromSPIRV("test.vert.spv");
+    //ShaderProgram vertex = ShaderProgram::fromSPIRV("vert.spv", shaderType::VERTEX);
+    vertex.cacheUniforms();
 
     glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
 
