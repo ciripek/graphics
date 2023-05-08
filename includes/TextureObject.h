@@ -1,25 +1,12 @@
 ﻿#pragma once
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include <string>
 
-enum class TextureType
-{
-	Texture1D					= GL_TEXTURE_1D,
-	Texture2D					= GL_TEXTURE_2D,
-	Texture3D					= GL_TEXTURE_3D,
-	Texture1DArray				= GL_TEXTURE_1D_ARRAY,
-	Texture2DArray				= GL_TEXTURE_2D_ARRAY,
-	TextureRectangle			= GL_TEXTURE_RECTANGLE,
-	TextureCubeMap				= GL_TEXTURE_CUBE_MAP,
-	TextureCubeMapArray			= GL_TEXTURE_CUBE_MAP_ARRAY,
-	Texture2DMultisample		= GL_TEXTURE_2D_MULTISAMPLE,
-	Texture2DMultisampleArray	= GL_TEXTURE_2D_MULTISAMPLE_ARRAY
-};
+#include "enums.hpp"
 
-template <TextureType type = TextureType::Texture2D>
+template <textureType type = textureType::Texture2D>
 class TextureObject final
 {
 public:
@@ -48,4 +35,4 @@ private:
 #include "TextureObject.inl"
 
 using Texture2D = TextureObject<>;
-using TextureCubeMap = TextureObject<TextureType::TextureCubeMap>;
+using TextureCubeMap = TextureObject<textureType::TextureCubeMap>;

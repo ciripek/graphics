@@ -2,8 +2,8 @@
 
 #include <imgui.h>
 
-#include "includes/GLUtils.hpp"
-
+#include "includes/DSABuffers.hpp"
+#include "includes/DSATextures.hpp"
 CMyApp::CMyApp() {
     m_camera.SetView(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 }
@@ -11,26 +11,15 @@ CMyApp::CMyApp() {
 CMyApp::~CMyApp() = default;
 
 bool CMyApp::Init() {
-    ShaderProgram vertex = ShaderProgram::fromSPIRV("test.vert.spv");
-    //ShaderProgram vertex = ShaderProgram::fromSPIRV("vert.spv", shaderType::VERTEX);
     vertex.cacheUniforms();
+    fragment.cacheUniforms();
 
     glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-
-    m_program.AttachShaders({
-        {GL_VERTEX_SHADER,   "myVert.vert"},
-        {GL_FRAGMENT_SHADER, "myFrag.frag"}
-    });
-
-    m_program.LinkProgram();
-
-    m_suzanneTexture.FromFile("assets/marron.jpg");
-
-    model.init();
+    texture.AttachFromFile("assets/wood.jpg");
 
     m_camera.SetProj(glm::radians(60.0f), 640.0f / 480.0f, 0.01f, 1000.0f);
 
@@ -52,19 +41,33 @@ void CMyApp::Update() {
 void CMyApp::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glm::mat4 viewProj = m_camera.GetViewProj();
+    const glm::mat4 viewProj = m_camera.GetViewProj();
 
-    glm::mat4 suzanneWorld = glm::mat4(1.0f);
+    const glm::mat4 suzanneWorld = glm::mat4(1.0F);
 
+    programPipelines.bind();
+
+    programPipelines.useProgramStages(shaderStage::VERTEX, vertex);
+    programPipelines.useProgramStages(shaderStage::FRAGMENT, fragment);
+
+    vertex.setUniform("MVP", viewProj * suzanneWorld);
+    vertex.setUniform("world", suzanneWorld);
+    vertex.setUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
+
+    fragment.setTexture("texImage", 0, texture[0]);
+
+    model.draw();
+    ProgramPipeline::unbind();
+
+/*
     m_program.Use();
     m_program.SetTexture("texImage", 0, m_suzanneTexture);
     m_program.SetUniform("MVP", viewProj * suzanneWorld);
     m_program.SetUniform("world", suzanneWorld);
     m_program.SetUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
-    model.draw();
 
     m_program.Unuse();
-
+*/
     ImGui::ShowDemoWindow();
 }
 

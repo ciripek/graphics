@@ -25,7 +25,9 @@
 // mesh
 #include "includes/Model.hpp"
 #include "includes/ObjParser.hpp"
+#include "includes/ProgramPipelines.hpp"
 #include "includes/ShaderProgram.hpp"
+#include "includes/DSATextures.hpp"
 
 class CMyApp
 {
@@ -50,9 +52,12 @@ public:
 private:
 	gCamera				m_camera;
 
-    Model model {"assets/Suzanne.obj"};
-    Texture2D m_suzanneTexture;
-    ProgramObject m_program;
+    Model model {"assets/kocka.obj"};
+
+    ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert");
+    ShaderProgram fragment = ShaderProgram::fromGLSL("myFrag.frag");
+    ProgramPipeline programPipelines;
+    DSATexture2D texture{1};
 
     struct Vertex
 	{

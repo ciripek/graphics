@@ -189,9 +189,9 @@ template <typename T>			constexpr GLsizei ContainerSizeInBytes(const std::vector
 
 */
 template <typename T>			constexpr const T* PointerToStart(const T& pArg) { return &pArg; }
-template <typename T, size_t N> constexpr const T* PointerToStart(const std::array<T, N>& pArg) { return &pArg[0]; }
+template <typename T, size_t N> constexpr const T* PointerToStart(const std::array<T, N>& pArg) { return pArg.data(); }
 template <typename T, size_t N> constexpr const T* PointerToStart(const T(&pArg)[N]) { return &pArg[0]; }
-template <typename T>			constexpr const T* PointerToStart(const std::vector<T>& pArg) { return pArg.empty() ? nullptr: &pArg[0]; }
+template <typename T>			constexpr const T* PointerToStart(const std::vector<T>& pArg) { return pArg.empty() ? nullptr: pArg.data(); }
 
 /*
 

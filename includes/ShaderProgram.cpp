@@ -2,7 +2,6 @@
 
 #include <GL/glew.h>
 
-#include <fmt/ranges.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -77,13 +76,12 @@ ShaderProgram ShaderProgram::fromSPIRV(const std::filesystem::path &path, shader
     return {program, type};
 }
 
-void ShaderProgram::cacheUniforms() const {
+void ShaderProgram::cacheUniforms(){
     GLint uniform_count = 0;
     glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &uniform_count);
 
     if (uniform_count != 0)
     {
-        fmt::println("{}", uniform_count);
         uniforms.reserve(uniform_count);
 
         GLint 	max_name_len = 0;
@@ -129,4 +127,8 @@ shaderType ShaderProgram::getTypeFromFile(const std::filesystem::path &path) {
     assert(false);
 }
 
+void ShaderProgram::setTexture(const std::string &uniform, GLint sampler, GLuint textureID) {
+    glBindTextureUnit(sampler, textureID);
+    setUniform(uniform, sampler);
+}
 

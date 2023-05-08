@@ -2,26 +2,58 @@
 
 #include <GL/glew.h>
 
-#include <memory>
+#include <array>
 
 #include "enums.hpp"
 
+template<size_t size = 1>
 class ProgramPipelines {
 public:
-    explicit ProgramPipelines(int num = 1);
-    ~ProgramPipelines();
+    explicit ProgramPipelines() {
+        glCreateProgramPipelines(size, ids.data());
+    }
+
+    ~ProgramPipelines(){
+        glDeleteProgramPipelines(size, ids.data());
+    }
 
     ProgramPipelines (const ProgramPipelines & ) = delete;
-    ProgramPipelines & operator= (const ProgramPipelines & ) = delete;
-    ProgramPipelines (ProgramPipelines && ) noexcept = default;
-    ProgramPipelines& operator=(ProgramPipelines&&) noexcept = default;
+    ProgramPipelines& operator= (const ProgramPipelines & ) = delete;
 
-    void activeShaderProgram(GLuint program, int num = 0) const;
+    ProgramPipelines (ProgramPipelines&&  other) noexcept : ids(std::exchange(other.ids, {})) {}
+    ProgramPipelines& operator=(ProgramPipelines &&other) noexcept {
 
-    void bind(int num = 0) const ;
-    void validate(int num = 0) const;
-    void useProgramStages(shaderStage stages, GLuint program, int num = 0) const;
+        if (this != &other) {
+            ids = std::exchange(other.ids, {});
+        }
+
+        return *this;
+    };
+
+    void activeShaderProgram(GLuint program, int num = 0) const {
+        glActiveShaderProgram(ids[num], program);
+    }
+
+    void bind(int num = 0) const {
+        glBindProgramPipeline(ids[num]);
+    }
+
+    static void unbind() {
+        glBindProgramPipeline(0);
+    }
+    void validate(int num = 0) const {
+        glValidateProgramPipeline(ids[num]);
+    }
+
+    void useProgramStages(shaderStage stages, GLuint program, int num = 0) const {
+        glUseProgramStages(ids[num], static_cast<GLbitfield>(stages), program);
+    }
+
+    consteval int getNumberOfPipeline() const {
+        return size;
+    }
 private:
-    int numberOfPipeline;
-    std::unique_ptr<GLuint[]> ids;
+    std::array<GLuint, size> ids;
 };
+
+using ProgramPipeline = ProgramPipelines<1>;

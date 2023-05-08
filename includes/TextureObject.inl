@@ -6,26 +6,26 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type>::TextureObject()
 {
 	glGenTextures(1, &m_id);
 }
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type>::TextureObject(const std::string &s)
 {
 	glGenTextures(1, &m_id);
 	AttachFromFile(s);
 }
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type>::~TextureObject()
 {
 	Clean();
 }
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type>::TextureObject(TextureObject && rhs)
 {
 	if (&rhs == this)
@@ -35,7 +35,7 @@ inline TextureObject<type>::TextureObject(TextureObject && rhs)
 	rhs.m_id = 0;
 }
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type> & TextureObject<type>::operator=(TextureObject && rhs)
 {
 	if (&rhs == this)
@@ -47,7 +47,7 @@ inline TextureObject<type> & TextureObject<type>::operator=(TextureObject && rhs
 	return *this;
 }
 
-template<TextureType type>
+template<textureType type>
 inline TextureObject<type>& TextureObject<type>::operator=(const std::string & s)
 {
 	AttachFromFile(s);
@@ -91,7 +91,7 @@ inline int transform_image(int pitch, int height, void* image_pixels)
 	return 0;
 }
 
-template<TextureType type>
+template<textureType type>
 inline void TextureObject<type>::AttachFromFile(const std::string& filename, bool generateMipMap, GLuint role)
 {
 	SDL_Surface* loaded_img = IMG_Load(filename.c_str());
@@ -117,7 +117,7 @@ inline void TextureObject<type>::AttachFromFile(const std::string& filename, boo
 	}
 
 	// Áttérés SDL koordinátarendszerről ( (0,0) balfent ) OpenGL textúra-koordinátarendszerre ( (0,0) ballent )
-	if (type != TextureType::TextureCubeMap && type != TextureType::TextureCubeMapArray) {
+	if (type != textureType::TextureCubeMap && type != textureType::TextureCubeMapArray) {
 		if (transform_image(loaded_img->pitch, loaded_img->h, loaded_img->pixels) == -1) {
 			std::cout << "[AttachFromFile] Error transforming image: " << SDL_GetError() << std::endl;
 			SDL_FreeSurface(loaded_img);
@@ -147,13 +147,13 @@ inline void TextureObject<type>::AttachFromFile(const std::string& filename, boo
 	SDL_FreeSurface(loaded_img);
 }
 
-template<TextureType type>
+template<textureType type>
 inline void TextureObject<type>::FromFile(const std::string& s)
 {
 	AttachFromFile(s);
 }
 
-template<TextureType type>
+template<textureType type>
 inline void TextureObject<type>::Clean()
 {
 	if (m_id != 0)
