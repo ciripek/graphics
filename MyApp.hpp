@@ -52,7 +52,7 @@ public:
 private:
 	gCamera				m_camera;
 
-    Model model {"assets/kocka.obj"};
+    Model model {"assets/suzanne.obj"};
 
     ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert");
     ShaderProgram fragment = ShaderProgram::fromGLSL("myFrag.frag");

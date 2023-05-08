@@ -54,9 +54,10 @@ void CMyApp::Render() {
     vertex.setUniform("world", suzanneWorld);
     vertex.setUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
 
-    fragment.setTexture("texImage", 0, texture[0]);
+    //fragment.setTexture("texImage", 0, texture[0]);
+    fragment.setUniform("viewPos", m_camera.GetEye());
 
-    model.draw();
+    model.draw(fragment);
     ProgramPipeline::unbind();
 
 /*

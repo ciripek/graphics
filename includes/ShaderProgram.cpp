@@ -127,7 +127,7 @@ shaderType ShaderProgram::getTypeFromFile(const std::filesystem::path &path) {
     assert(false);
 }
 
-void ShaderProgram::setTexture(const std::string &uniform, GLint sampler, GLuint textureID) {
+void ShaderProgram::setTexture(const std::string &uniform, GLint sampler, GLuint textureID){
     glBindTextureUnit(sampler, textureID);
     setUniform(uniform, sampler);
 }

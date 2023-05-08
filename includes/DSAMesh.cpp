@@ -38,11 +38,13 @@ GLuint DSAMesh::initVao(){
     return vertexArrayObject;
 }
 
-void DSAMesh::draw(GLuint vertexArrayObject) const{
+void DSAMesh::draw(GLuint vertexArrayObject, ShaderProgram &fragment, const std::unordered_map<std::string, GLuint> &textureMap, const std::vector<tinyobj::material_t>&materials){
     glBindVertexArray(vertexArrayObject);
 
     glVertexArrayVertexBuffer(vertexArrayObject, 0, vertexBuffer, 0, sizeof(vertex));
     glVertexArrayElementBuffer(vertexArrayObject, indexBuffer);
+
+    fragment.setTexture(materials[material_index].diffuse_texname, 0, textureMap.at(materials[material_index].diffuse_texname));
 
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
 

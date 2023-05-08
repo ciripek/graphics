@@ -24,8 +24,7 @@ public:
         bool operator==(const DSAMesh::vertex &other) const = default;
     };
 
-
-
+    int material_index;
 
     DSAMesh();
     ~DSAMesh();
@@ -42,7 +41,7 @@ public:
 
     void initBuffers();
 
-    void draw(GLuint vertexArrayObject) const;
+    void draw(GLuint vertexArrayObject, ShaderProgram &fragment, const std::unordered_map<std::string, GLuint> &textureMap, const std::vector<tinyobj::material_t>&materials);
 
     void addVertex(const vertex &vertex) {
         vertices.push_back(vertex);
@@ -60,30 +59,10 @@ public:
 
     static void deleteVao(GLuint vao);
 
-    void setMaterial(const tinyobj::material_t &mat) {
-        material_t = mat;
-    }
-
 private:
     GLuint vertexBuffer{};
     GLuint indexBuffer{};
 
     std::vector<vertex> vertices;
     std::vector<GLuint> indices;
-    tinyobj::material_t material_t;
-};
-
-template<>
-struct std::hash<DSAMesh::vertex>
-{
-    std::size_t operator()(const DSAMesh::vertex& v) const noexcept
-    {
-        using std::size_t;
-        using std::hash;
-        using std::string;
-
-        return ((hash<glm::vec3>()(v.position)
-                 ^ (hash<glm::vec3>()(v.normal) << 1)) >> 1)
-               ^ (hash<glm::vec2>()(v.texcoord) << 1);
-    }
 };

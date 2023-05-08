@@ -9,13 +9,23 @@
 
 class DSABuffers {
 public:
-    explicit DSABuffers(int num = 1) : ids(std::make_unique<GLuint[]>(num)), num(num) {
+    DSABuffers() = default;
+
+    explicit DSABuffers(int num) : ids(std::make_unique<GLuint[]>(num)), num(num) {
         glCreateBuffers(num, ids.get());
     }
 
     ~DSABuffers() {
-        glDeleteBuffers(num, ids.get());
+        if (ids.get() != nullptr){
+            glDeleteBuffers(num, ids.get());
+        }
     }
+
+    DSABuffers(const DSABuffers&) = delete;
+    DSABuffers& operator=(const DSABuffers&) = delete;
+
+    DSABuffers(DSABuffers&& rhs) noexcept = default;
+    DSABuffers& operator=(DSABuffers&& rhs) noexcept = default;
 
     void storage(GLsizeiptr size, const void* data, GLbitfield flags, int index = 0){
         glNamedBufferStorage(ids[index], size, data, flags);
@@ -56,5 +66,6 @@ public:
     }
 private:
     std::unique_ptr<GLuint[]> ids;
-    const int num;
+    int num = 0;
+
 };
