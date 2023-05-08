@@ -102,11 +102,6 @@ void ShaderProgram::cacheUniforms(){
 
             uniforms.emplace(std::string(uniform_name.get(), length), info);
         }
-
-        fmt::println("Program id : {}", m_id);
-        for(const auto& [key, value]: uniforms){
-            fmt::println("{} -> {} {}", key, value.location, value.count);
-        }
     }
 }
 
@@ -128,6 +123,11 @@ shaderType ShaderProgram::getTypeFromFile(const std::filesystem::path &path) {
 }
 
 void ShaderProgram::setTexture(const std::string &uniform, GLint sampler, GLuint textureID){
+    const auto it = uniforms.find( uniform );
+    if ( it == uniforms.end() ) {
+        return;
+    }
+
     glBindTextureUnit(sampler, textureID);
     setUniform(uniform, sampler);
 }

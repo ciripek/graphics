@@ -52,12 +52,11 @@ public:
 private:
 	gCamera				m_camera;
 
-    Model model {"assets/suzanne.obj"};
+    Model model {"assets/hammerhead.obj"};
 
     ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert");
     ShaderProgram fragment = ShaderProgram::fromGLSL("myFrag.frag");
     ProgramPipeline programPipelines;
-    DSATexture2D texture{1};
 
     struct Vertex
 	{

@@ -8,5 +8,6 @@
       <option name="clazyChecks" value="level2" />
     </inspection_tool>
     <inspection_tool class="OCInconsistentNaming" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ReassignedToPlainText" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

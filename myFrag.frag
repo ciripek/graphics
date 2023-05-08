@@ -10,7 +10,7 @@ layout(location = 0) in outVertexData{
 out vec4 fs_out_col;
 
 // irány fényforrás: fény iránya
-uniform vec3 light_dir = vec3(10,10,10);
+uniform vec3 light_dir = vec3(100);
 
 // fénytulajdonságok: ambiens, diffúz, ...
 uniform vec3 La = vec3(0.4, 0.4, 0.4);
@@ -29,7 +29,7 @@ void main()
 
 	vec3 color = texture(map_Kd, vs_out_tex).rgb;
 	// ambient
-	vec3 ambient = 0.2 * color;
+	vec3 ambient = 0.2 * Ka;
 
 	// diffuse
 	vec3 lightDir = normalize(light_dir - vs_out_pos);
@@ -45,6 +45,6 @@ void main()
 	vec3 halfwayDir = normalize(lightDir + viewDir);
 	spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
 
-	vec3 specular = vec3(0.3) * spec; // assuming bright white light color
+	vec3 specular = Ks * spec; // assuming bright white light color
 	fs_out_col = vec4(ambient + diffuse + specular, 1.0);
 }

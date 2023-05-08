@@ -5,7 +5,7 @@
 #include "includes/DSABuffers.hpp"
 #include "includes/DSATextures.hpp"
 CMyApp::CMyApp() {
-    m_camera.SetView(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    m_camera.SetView(glm::vec3(120), glm::vec3(0), glm::vec3(0, 1, 0));
 }
 
 CMyApp::~CMyApp() = default;
@@ -19,8 +19,6 @@ bool CMyApp::Init() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    texture.AttachFromFile("assets/wood.jpg");
-
     m_camera.SetProj(glm::radians(60.0f), 640.0f / 480.0f, 0.01f, 1000.0f);
 
     return true;
@@ -30,8 +28,8 @@ void CMyApp::Clean() {
 }
 
 void CMyApp::Update() {
-    static Uint32 last_time = SDL_GetTicks();
-    float delta_time = (SDL_GetTicks() - last_time) / 1000.0f;
+    static Uint64 last_time = SDL_GetTicks64();
+    float delta_time = (SDL_GetTicks64() - last_time) / 1000.0f;
 
     m_camera.Update(delta_time);
 
@@ -54,21 +52,11 @@ void CMyApp::Render() {
     vertex.setUniform("world", suzanneWorld);
     vertex.setUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
 
-    //fragment.setTexture("texImage", 0, texture[0]);
     fragment.setUniform("viewPos", m_camera.GetEye());
 
     model.draw(fragment);
     ProgramPipeline::unbind();
 
-/*
-    m_program.Use();
-    m_program.SetTexture("texImage", 0, m_suzanneTexture);
-    m_program.SetUniform("MVP", viewProj * suzanneWorld);
-    m_program.SetUniform("world", suzanneWorld);
-    m_program.SetUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
-
-    m_program.Unuse();
-*/
     ImGui::ShowDemoWindow();
 }
 
