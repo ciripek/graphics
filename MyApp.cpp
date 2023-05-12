@@ -11,6 +11,10 @@ CMyApp::CMyApp() {
 CMyApp::~CMyApp() = default;
 
 bool CMyApp::Init() {
+    if (!(vertex.isValid() && fragment.isValid())){
+        exit(EXIT_FAILURE);
+    }
+
     vertex.cacheUniforms();
     fragment.cacheUniforms();
 

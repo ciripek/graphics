@@ -51,12 +51,12 @@ public:
 
 private:
 	gCamera				m_camera;
-
-    Model model {"assets/hammerhead.obj"};
-
     ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert");
     ShaderProgram fragment = ShaderProgram::fromGLSL("myFrag.frag");
     ProgramPipeline programPipelines;
+
+
+    Model model {"assets/hammerhead.obj"};
 
     struct Vertex
 	{
