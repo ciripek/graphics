@@ -1,3 +1,4 @@
+.idea
 # Prerequisites
 *.d
 
@@ -175,3 +176,4 @@ imgui.ini
 
 !assets/*
 *.spv
+
