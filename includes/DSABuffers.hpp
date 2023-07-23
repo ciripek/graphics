@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <stdexcept>
-#include <array>
 #include <vector>
 
 class DSABuffers {
