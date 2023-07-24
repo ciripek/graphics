@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include <array>
+
 CMyApp::CMyApp() {
     m_camera.SetView(glm::vec3(120), glm::vec3(0), glm::vec3(0, 1, 0));
 }
@@ -16,7 +18,42 @@ bool CMyApp::Init() {
 
     m_camera.SetProj(glm::radians(60.0f), 640.0f / 480.0f, 0.01f, 1000.0f);
 
+    setUpBuffers();
+
+    programPipeline.useProgramStages(shaderStage::VERTEX, vertex);
+    programPipeline.useProgramStages(shaderStage::FRAGMENT, fragment);
+    programPipeline.validate();
+
     return true;
+}
+
+void CMyApp::setUpBuffers() {
+    constexpr auto rectangleBuffer = std::to_array<glm::vec2>(
+            {
+                {-1, -1},
+                {1,  -1},
+                {-1, 1},
+                {1,  1}
+            });
+
+    constexpr auto rectangleIndex = std::to_array<GLushort>({ 0U, 1U, 2U, 2U, 1U, 3U, });
+
+    buffer.storage(rectangleBuffer, 0, 0);
+    buffer.storage(rectangleIndex, 0, 1);
+
+    vao.init({
+        {
+            .attribindex = 0,
+            .size = 2,
+            .type = GL_FLOAT,
+            .normalized = GL_FALSE,
+            .relativeoffset = 0,
+            .bindingindex = 0
+        },
+    });
+
+    vao.vertexArrayVertexBuffer(0, buffer[0], 0, sizeof(glm::vec2));
+    vao.vertexArrayElementBuffer(buffer[1]);
 }
 
 void CMyApp::Clean() {
@@ -24,7 +61,7 @@ void CMyApp::Clean() {
 
 void CMyApp::Update() {
     static Uint64 last_time = SDL_GetTicks64();
-    float delta_time = (SDL_GetTicks64() - last_time) / 1000.0f;
+    const float delta_time = (SDL_GetTicks64() - last_time) / 1000.0f;
 
     m_camera.Update(delta_time);
 
@@ -33,6 +70,13 @@ void CMyApp::Update() {
 
 void CMyApp::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    programPipeline.bind();
+    vao.bind();
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+    DSAVertexArrays::unbind();
+    ProgramPipeline::unbind();
     ImGui::ShowDemoWindow();
 }
 

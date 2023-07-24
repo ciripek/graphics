@@ -42,3 +42,6 @@ endfunction(add_shader)
 add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES})
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIRS} ${EXTERNAL} libs)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${ASSIMP_LIBRARIES} ${EXTERNAL})
+
+add_shader(${PROJECT_NAME} fragment.frag)
+add_shader(${PROJECT_NAME} vertex.vert)

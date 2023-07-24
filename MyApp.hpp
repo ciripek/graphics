@@ -15,8 +15,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "includes/gCamera.h"
+#include "includes/DSABuffers.hpp"
+#include "includes/DSAVertexArray.hpp"
 #include "includes/enums.hpp"
+#include "includes/ShaderProgram.hpp"
+#include "includes/gCamera.h"
+#include "includes/ProgramPipelines.hpp"
 
 class CMyApp
 {
@@ -43,5 +47,13 @@ public:
 
 private:
 	gCamera				m_camera;
+    DSABuffers buffer{2};
+    DSAVertexArrays vao{1};
+
+    ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/vertex.vert.spv");
+    ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/fragment.frag.spv");
+    ProgramPipeline programPipeline;
+
+    void setUpBuffers();
 };
 
