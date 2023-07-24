@@ -7,20 +7,20 @@ layout(location = 0) in outVertexData{
 	vec2 vs_out_tex;
 };
 
-out vec4 fs_out_col;
+layout(location = 0) out vec4 fs_out_col;
 
 // irány fényforrás: fény iránya
-uniform vec3 light_dir = vec3(100);
+layout(location = 0) uniform vec3 light_dir = vec3(100);
 
 // fénytulajdonságok: ambiens, diffúz, ...
-uniform vec3 La = vec3(0.4, 0.4, 0.4);
-uniform vec3 Ld = vec3(0.6, 0.6, 0.6);
+layout(location = 1) uniform vec3 La = vec3(0.4, 0.4, 0.4);
+layout(location = 2) uniform vec3 Ld = vec3(0.6, 0.6, 0.6);
 
-uniform vec3 viewPos;
+layout(location = 3) uniform vec3 viewPos;
 
 
-uniform vec3 Ka;
-uniform vec3 Ks;
+layout(location = 4) uniform vec3 Ka;
+layout(location = 5) uniform vec3 Ks;
 
 uniform sampler2D map_Kd;
 

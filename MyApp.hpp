@@ -51,8 +51,8 @@ public:
 
 private:
 	gCamera				m_camera;
-    ShaderProgram vertex = ShaderProgram::fromGLSL("myVert.vert");
-    ShaderProgram fragment = ShaderProgram::fromGLSL("myFrag.frag");
+    ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/myVert.vert.spv");
+    ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/myFrag.frag.spv");
     ProgramPipeline programPipelines;
 
 
