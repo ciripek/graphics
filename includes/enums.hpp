@@ -2,6 +2,24 @@
 
 #include <GL/glew.h>
 
+#define DELETE_COPY(classname)  \
+    classname ( const classname & ) = delete; \
+    classname & operator= ( const classname & ) = delete;
+
+#define DEFAULT_COPY(classname)  \
+    classname ( const classname & ) = default; \
+    classname & operator= ( const classname & ) = default;
+
+#define DELETE_MOVE(classname) \
+    classname ( classname && ) = delete; \
+    classname& operator=(classname&&) = delete;
+
+
+#define DEFAULT_MOVE(classname) \
+    classname ( classname && ) = default; \
+    classname& operator=(classname&&) = default;
+
+
 enum class shaderType {
     COMPUTER = GL_COMPUTE_SHADER,
     VERTEX = GL_VERTEX_SHADER,

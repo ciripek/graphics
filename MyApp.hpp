@@ -16,12 +16,16 @@
 #include <glm/gtx/transform2.hpp>
 
 #include "includes/gCamera.h"
+#include "includes/enums.hpp"
 
 class CMyApp
 {
 public:
 	CMyApp();
 	~CMyApp();
+
+    DELETE_COPY(CMyApp)
+    DEFAULT_MOVE(CMyApp)
 
 	bool Init();
 	void Clean();
