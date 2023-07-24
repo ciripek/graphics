@@ -2,8 +2,6 @@
 
 #include <imgui.h>
 
-#include "includes/DSABuffers.hpp"
-#include "includes/DSATextures.hpp"
 CMyApp::CMyApp() {
     m_camera.SetView(glm::vec3(120), glm::vec3(0), glm::vec3(0, 1, 0));
 }
@@ -11,13 +9,6 @@ CMyApp::CMyApp() {
 CMyApp::~CMyApp() = default;
 
 bool CMyApp::Init() {
-    if (!(vertex.isValid() && fragment.isValid())){
-        exit(EXIT_FAILURE);
-    }
-
-    vertex.cacheUniforms();
-    fragment.cacheUniforms();
-
     glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
 
     glEnable(GL_CULL_FACE);
@@ -42,25 +33,6 @@ void CMyApp::Update() {
 
 void CMyApp::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    const glm::mat4 viewProj = m_camera.GetViewProj();
-
-    const glm::mat4 suzanneWorld = glm::mat4(1.0F);
-
-    programPipelines.bind();
-
-    programPipelines.useProgramStages(shaderStage::VERTEX, vertex);
-    programPipelines.useProgramStages(shaderStage::FRAGMENT, fragment);
-
-    vertex.setUniform("MVP", viewProj * suzanneWorld);
-    vertex.setUniform("world", suzanneWorld);
-    vertex.setUniform("worldIT", glm::inverse(glm::transpose(suzanneWorld)));
-
-    fragment.setUniform("viewPos", m_camera.GetEye());
-
-    model.draw(fragment);
-    ProgramPipeline::unbind();
-
     ImGui::ShowDemoWindow();
 }
 

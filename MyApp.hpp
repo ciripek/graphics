@@ -17,18 +17,6 @@
 
 #include "includes/gCamera.h"
 
-#include "includes/BufferObject.h"
-#include "includes/ProgramObject.h"
-#include "includes/TextureObject.h"
-#include "includes/VertexArrayObject.h"
-
-// mesh
-#include "includes/Model.hpp"
-#include "includes/ObjParser.hpp"
-#include "includes/ProgramPipelines.hpp"
-#include "includes/ShaderProgram.hpp"
-#include "includes/DSATextures.hpp"
-
 class CMyApp
 {
 public:
@@ -51,18 +39,5 @@ public:
 
 private:
 	gCamera				m_camera;
-    ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/myVert.vert.spv");
-    ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/myFrag.frag.spv");
-    ProgramPipeline programPipelines;
-
-
-    Model model {"assets/hammerhead.obj"};
-
-    struct Vertex
-	{
-		glm::vec3 p;
-		glm::vec3 n;
-		glm::vec2 t;
-	};
 };
 
