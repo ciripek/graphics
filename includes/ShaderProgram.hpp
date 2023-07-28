@@ -9,8 +9,8 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "enums.hpp"
 #include "GLUtils.hpp"
+#include "enums.hpp"
 
 
 class ShaderProgram {

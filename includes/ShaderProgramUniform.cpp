@@ -163,38 +163,32 @@ void ShaderProgram::setUniform(const std::string &name, glm::uvec4 vec) {
 }
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::mat2> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix2fv(m_id, get(name, begin), value.size(), transpose,
                               glm::value_ptr(value.front()));
 }
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::dmat2> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix2dv(m_id, get(name, begin), value.size(), transpose,
                               glm::value_ptr(value.front()));
 }
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::mat3> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix3fv(m_id, get(name, begin), value.size(), transpose,
                               glm::value_ptr(value.front()));
 }
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::dmat3> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix3dv(m_id, get(name, begin), value.size(), transpose,
                               glm::value_ptr(value.front()));
 }
 
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::mat4> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix4fv(m_id, uniforms[name].location + begin, value.size(), transpose,
                               glm::value_ptr(value.front()));
 }
 
 void ShaderProgram::setUniform(const std::string &name, std::span<glm::dmat4> value, GLboolean transpose, int begin) {
-    glm::value_ptr(value[0]);
     glProgramUniformMatrix4dv(m_id, uniforms[name].location + begin, value.size(), transpose,
                               glm::value_ptr(value.front()));
 }

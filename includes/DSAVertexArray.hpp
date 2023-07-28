@@ -5,6 +5,8 @@
 #include <memory>
 #include <initializer_list>
 
+#include "enums.hpp"
+
 class DSAVertexArrays {
 public:
     struct VertexInfo{
@@ -15,6 +17,9 @@ public:
         GLuint relativeoffset;
         GLuint bindingindex;
     };
+
+    DELETE_COPY(DSAVertexArrays)
+    DEFAULT_MOVE(DSAVertexArrays)
 
     explicit DSAVertexArrays(int num) : ids(std::make_unique<GLuint[]>(num)), num(num){
         glCreateVertexArrays(num, ids.get());

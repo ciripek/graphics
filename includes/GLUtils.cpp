@@ -256,6 +256,7 @@ std::optional<std::vector<char>> loadBinary(const std::filesystem::path &fileNam
     std::ifstream shaderStream(fileName, std::ios_base::binary);
 
     if (!shaderStream.is_open()) {
+        fmt::println("{}", std::filesystem::current_path().root_path().native());
         fmt::println(stderr, "Error while loading binary shader {}!", fileName.native());
         return std::nullopt;
     }
