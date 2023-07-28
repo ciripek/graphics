@@ -2,6 +2,9 @@
 
 // C++ includes
 #include <memory>
+#include <array>
+#include <numbers>
+#include <cmath>
 
 // GLEW
 #include <GL/glew.h>
@@ -17,10 +20,10 @@
 
 #include "includes/DSABuffers.hpp"
 #include "includes/DSAVertexArray.hpp"
-#include "includes/enums.hpp"
-#include "includes/ShaderProgram.hpp"
-#include "includes/gCamera.h"
 #include "includes/ProgramPipelines.hpp"
+#include "includes/ShaderProgram.hpp"
+#include "includes/enums.hpp"
+#include "includes/gCamera.h"
 
 class CMyApp
 {
@@ -47,7 +50,7 @@ public:
 
 private:
 	gCamera				m_camera;
-    DSABuffers buffer{2};
+    DSABuffers buffer{4};
     DSAVertexArrays vao{1};
 
     ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/vertex.vert.spv");
@@ -55,5 +58,32 @@ private:
     ProgramPipeline programPipeline;
 
     void setUpBuffers();
+
+    struct circle {
+        glm::vec3 center;
+        glm::float32 radius;
+    };
+
+    struct Material {
+        glm::vec3 ambient;
+        alignas(sizeof(glm::vec4)) glm::vec3 diffuse;
+        alignas(sizeof(glm::vec4)) glm::vec3 specular;
+        alignas(sizeof(glm::vec4)) glm::vec3 reflect_color;
+        glm::float32 shininess;
+    };
+
+    glm::vec2 window_size = {640.f, 480.f };
+    glm::float32 aspect = window_size.x / window_size.y;
+
+    static constexpr glm::float32 fovy = glm::radians(25.F);
+    glm::float32 fovx = 2 * std::atan(std::tan(fovy / 2) * aspect);
+    glm::int32 reflect = 1;
+
+
+    std::array<circle, 5> circlesBuffer = std::to_array<circle>({{{5,5,10},10}, {{15,15,15},3}, {{-13,13,13},3},
+                                                                 {{13,-13,13},6}, {{-13,13,-13},8}});
+
+
+    void renderImgui();
 };
 

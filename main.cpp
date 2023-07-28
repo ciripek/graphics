@@ -44,7 +44,9 @@ int main(int argc, char *args[]) {
     SDL_Window *win = SDL_CreateWindow("Hello SDL&OpenGL!",
                                        100, 100,
                                        640, 480,
-                                       SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                       SDL_WINDOW_OPENGL
+                                       | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
 
     if (win == nullptr) {
         fmt::println("[Window creation] Error while initializing SDL: {}", SDL_GetError());
