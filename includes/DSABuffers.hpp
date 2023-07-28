@@ -51,7 +51,11 @@ public:
     }
 
     void subData(GLsizeiptr size, const void *data, GLintptr offset = 0, int index = 0){
-        glBufferSubData(ids[index], offset, size, data);
+        glNamedBufferSubData(ids[index], offset, size, data);
+    }
+
+    void bindBufferBase(GLenum target, GLuint index, int i = 0){
+        glBindBufferBase(target, index, ids[i]);
     }
 
     int getBufferCount() const { return num; }

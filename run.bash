@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-mangohud --dlsym ./cmake-build-release/Base
+mangohud --dlsym ./cmake-build-release/Grafika
