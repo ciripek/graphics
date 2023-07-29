@@ -2,8 +2,9 @@
 
 #include <imgui.h>
 
-#include "includes/DSABuffers.hpp"
-#include "includes/DSATextures.hpp"
+#include "DSABuffers.hpp"
+#include "DSATextures.hpp"
+
 CMyApp::CMyApp() {
     m_camera.SetView(glm::vec3(120), glm::vec3(0), glm::vec3(0, 1, 0));
 }

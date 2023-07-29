@@ -15,20 +15,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "includes/gCamera.h"
-#include "includes/enums.hpp"
-
-#include "includes/BufferObject.h"
-#include "includes/ProgramObject.h"
-#include "includes/TextureObject.h"
-#include "includes/VertexArrayObject.h"
-
-// mesh
-#include "includes/Model.hpp"
-#include "includes/ObjParser.hpp"
-#include "includes/ProgramPipelines.hpp"
-#include "includes/ShaderProgram.hpp"
-#include "includes/DSATextures.hpp"
+#include "gCamera.h"
+#include "enums.hpp"
+#include "ShaderProgram.hpp"
+#include "ProgramPipelines.hpp"
+#include "Model.hpp"
+#include "DSABufferStatic.hpp"
 
 class CMyApp
 {

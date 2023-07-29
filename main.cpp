@@ -12,7 +12,7 @@
 
 #include <fmt/core.h>
 
-#include "includes/GLDebugMessageCallback.h"
+#include "GLDebugMessageCallback.h"
 
 #include "MyApp.hpp"
 
