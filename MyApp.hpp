@@ -21,6 +21,7 @@
 #include "ProgramPipelines.hpp"
 #include "Model.hpp"
 #include "DSABufferStatic.hpp"
+#include "DSABufferStaticArray.hpp"
 
 class CMyApp
 {
@@ -46,7 +47,7 @@ public:
 	void Resize(int, int);
 
 private:
-	gCamera				m_camera;
+	gCamera m_camera;
     ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/myVert.vert.spv");
     ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/myFrag.frag.spv");
     ProgramPipeline programPipelines;

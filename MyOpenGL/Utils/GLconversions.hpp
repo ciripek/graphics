@@ -180,7 +180,7 @@ Compute the length of the container in _bytes_.
 template <typename T>			constexpr GLsizei ContainerSizeInBytes(const T&) { return sizeof(T); }
 template <typename T, size_t N> constexpr GLsizei ContainerSizeInBytes(const std::array<T, N>&) { return N*sizeof(T); }
 template <typename T, size_t N> constexpr GLsizei ContainerSizeInBytes(const T(&)[N]) { return N*sizeof(T); }
-template <typename T>			constexpr GLsizei ContainerSizeInBytes(const std::vector<T>& pArr) { return (GLsizei)pArr.size()*sizeof(T); }
+template <typename T>			constexpr GLsizei ContainerSizeInBytes(const std::vector<T>& pArr) { return pArr.size()*sizeof(T); }
 
 /*
 

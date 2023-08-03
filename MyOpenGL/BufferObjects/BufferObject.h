@@ -6,40 +6,12 @@
 #include <vector>
 
 #include "GLconversions.hpp"
+#include "enums.hpp"
+
 
 /*
 	BufferType is an enum class that stands for OpenGL bind targets (from https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml - OpenGL 4.6)
 */
-enum class BufferType : GLenum
-{
-	Array				= GL_ARRAY_BUFFER,
-	AtomicCounter		= GL_ATOMIC_COUNTER_BUFFER,
-	CopyRead			= GL_COPY_READ_BUFFER,
-	CopyWrite			= GL_COPY_WRITE_BUFFER,
-	DispatchIndirect	= GL_DISPATCH_INDIRECT_BUFFER,
-	DrawIndirect		= GL_DRAW_INDIRECT_BUFFER,
-	ElementArray		= GL_ELEMENT_ARRAY_BUFFER,
-	PixelPack			= GL_PIXEL_PACK_BUFFER,
-	PixelUnpack			= GL_PIXEL_UNPACK_BUFFER,
-	Query				= GL_QUERY_BUFFER,
-	ShaderStorage		= GL_SHADER_STORAGE_BUFFER,
-	Texture				= GL_TEXTURE_BUFFER,
-	TransformFeedback	= GL_TRANSFORM_FEEDBACK_BUFFER,
-	Uniform				= GL_UNIFORM_BUFFER
-};
-
-enum class BufferUsage : GLenum
-{
-	StreamDraw		= GL_STREAM_DRAW,
-	StreamRead		= GL_STREAM_READ,
-	StreamCopy		= GL_STREAM_COPY,
-	StaticDraw		= GL_STATIC_DRAW,
-	StaticRead		= GL_STATIC_READ,
-	StaticCopy		= GL_STATIC_COPY,
-	DynamicDraw		= GL_DYNAMIC_DRAW,
-	DynamicRead		= GL_DYNAMIC_READ,
-	DynamicCopy		= GL_DYNAMIC_COPY
-};
 
 template <BufferType target = BufferType::Array , BufferUsage usage = BufferUsage::StreamDraw>
 class BufferObject final
