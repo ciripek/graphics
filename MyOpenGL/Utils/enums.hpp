@@ -127,3 +127,7 @@ ENUM_CLASS_AND(shaderStage)
 
 ENUM_CLASS_OR(BufferStorageUsage)
 ENUM_CLASS_AND(BufferStorageUsage)
+
+inline constexpr bool isBitSet(BufferStorageUsage bitfield, BufferStorageUsage bit){
+    return static_cast<GLbitfield>(bitfield & bit) != 0U;
+}

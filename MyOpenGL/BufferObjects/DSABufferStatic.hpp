@@ -40,35 +40,30 @@ public:
 
     template<class T>
     void storage(const T &data) const{
-        static_assert(HasContiguousStorage<T>::value, "Wrong Type of data container");
+        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
 
         storage(ContainerSizeInBytes(data), PointerToStart(data));
     }
     template<class T>
     void subData(const T &data, GLintptr offset = 0) const{
-        static_assert(HasContiguousStorage<T>::value, "Wrong Type of data container");
+        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
         subData(ContainerSizeInBytes(data), PointerToStart(data), offset);
     }
 
     void subData(GLsizeiptr size, const void *data, GLintptr offset = 0) const {
         using enum BufferStorageUsage;
-
-        if constexpr (isBitSet(Usage, DynamicStorageBit)){
-            static_assert(false, "Wrong Usage");
-        }
+        static_assert(!isBitSet(Usage, DynamicStorageBit), "Wrong Usage");
 
         glNamedBufferSubData(m_id, offset, size, data);
     }
 
-    void bindBufferBase(GLenum target, GLuint index) const {
+    void bindBufferBase(GLuint index) const {
         using enum BufferType;
 
-        if constexpr (Target == AtomicCounter || Target == TransformFeedback || Target == Uniform || Target == ShaderStorage){
-            static_assert(false, "Wrong Target");
-        }
+        static_assert(!(Target == AtomicCounter || Target == TransformFeedback || Target == Uniform || Target == ShaderStorage)
+                , "Wrong Target");
 
-
-        glBindBufferBase(target, index, m_id);
+        glBindBufferBase(static_cast<GLenum>(Target), index, m_id);
     }
 
     consteval BufferType getTarget() const {
@@ -82,8 +77,4 @@ public:
 private:
     GLuint m_id = 0;
     GLsizeiptr m_sizeInBytes = 0;
-
-    static constexpr bool isBitSet(BufferStorageUsage bitfield, BufferStorageUsage bit){
-        return static_cast<GLbitfield>(bitfield & bit) != 0U;
-    }
 };

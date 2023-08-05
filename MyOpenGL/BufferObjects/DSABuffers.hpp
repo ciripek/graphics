@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "GLconversions.hpp"
+
 class DSABuffers {
 public:
     DSABuffers() = default;
@@ -15,7 +17,7 @@ public:
     }
 
     ~DSABuffers() {
-        if (ids.get() != nullptr){
+        if (ids != nullptr){
             glDeleteBuffers(num, ids.get());
         }
     }
@@ -30,24 +32,18 @@ public:
         glNamedBufferStorage(ids[index], size, data, flags);
     }
 
-    template<class T, size_t N>
-    void storage(std::array<T, N> data, GLbitfield flags, int index = 0){
-        storage(data.size() * sizeof(T), data.data(), flags, index);
+    template<class T>
+    void storage(const T& data, GLbitfield flags, int index = 0){
+        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
+
+        storage(ContainerSizeInBytes(data), PointerToStart(data), flags, index);
     }
 
     template<class T>
-    void storage(std::vector<T> data, GLbitfield flags, int index = 0){
-        storage(data.size() * sizeof(T), data.data(), flags, index);
-    }
+    void subData(const T& data, GLintptr offset = 0, int index = 0){
+        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
 
-    template<class T, size_t N>
-    void subData(std::array<T, N> data, GLintptr offset = 0, int index = 0){
-        subData(data.size() * sizeof(T), data.data(), offset, index);
-    }
-
-    template<class T>
-    void subData(std::vector<T> data, GLintptr offset = 0, int index = 0){
-        subData(data.size() * sizeof(T), data.data(), offset, index);
+        subData(ContainerSizeInBytes(data), PointerToStart(data), offset, index);
     }
 
     void subData(GLsizeiptr size, const void *data, GLintptr offset = 0, int index = 0){

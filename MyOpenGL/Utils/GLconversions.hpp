@@ -207,3 +207,6 @@ template<typename T, size_t N> struct HasContiguousStorage< T[N]> : public std::
 
 template <typename T, typename R = void> 
 using IsContiguousContainer = std::enable_if_t<HasContiguousStorage< T>::value, R>;
+
+template<typename T>
+inline constexpr bool HasContiguousStorage_V = HasContiguousStorage<T>::value;
