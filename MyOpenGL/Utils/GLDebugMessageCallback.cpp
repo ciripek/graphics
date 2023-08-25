@@ -45,8 +45,7 @@
 
 #include "GLDebugMessageCallback.h"
 
-#include <iostream>
-
+#include "spdlog-config.hpp"
 // Callback function for printing debug statements
 void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length,
@@ -142,6 +141,6 @@ void GLAPIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         break;
     }
     // print OpenGL message
-    printf("OpenGL debug message [%d], type: %s, severity: %s, source: %s, message:\n%s\n\n",
+    SPDLOG_ERROR("OpenGL debug message [{}], type: {}, severity: {}, source: {}, message:\n{}\n\n",
         id, _type, _severity, _source, msg);
 }

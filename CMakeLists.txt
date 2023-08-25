@@ -8,11 +8,12 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(spdlog REQUIRED)
+
 
 add_subdirectory(MyOpenGL)
 
 add_subdirectory("libs")
-set(EXTERNAL IMGUI fmt)
 
 function(add_shader TARGET SHADER)
     find_program(GLSLC glslc)
@@ -40,7 +41,7 @@ add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES})
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS}
         ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${EXTERNAL} libs)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES}
-        ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  fmt::fmt MyOpenGL IMGUI)
+        ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} MyOpenGL IMGUI spdlog::spdlog)
 
 add_shader(${PROJECT_NAME} myFrag.frag)
 add_shader(${PROJECT_NAME} myVert.vert)

@@ -1,24 +1,13 @@
 ﻿#pragma once
 
-#include <cstdio>
-#include <filesystem>
-#include <fmt/core.h>
-#include <fstream>
-#include <iostream>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <vector>
-
 #include <GL/glew.h>
 
-#include <SDL_image.h>
+#include <SDL.h>
 
-/* 
+#include <filesystem>
+#include <optional>
+#include <vector>
 
-Az http://www.opengl-tutorial.org/ oldal alapján.
-
-*/
 std::optional<std::string> loadFile(const std::filesystem::path &fileName);
 std::optional<std::vector<char>> loadBinary(const std::filesystem::path &fileName);
 

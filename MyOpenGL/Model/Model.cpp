@@ -4,7 +4,6 @@
 
 #include <filesystem>
 #include <unordered_map>
-#include <fmt/core.h>
 
 #define TINYOBJLOADER_DONOT_INCLUDE_MAPBOX_EARCUT
 #define TINYOBJLOADER_IMPLEMENTATION
@@ -13,13 +12,15 @@
 #include "tiny_obj_loader.h"
 
 
+#include "spdlog-config.hpp"
+
 
 void Model::loadModel(const std::filesystem::path &name) {
     tinyobj::ObjReader reader;
 
     if (!reader.ParseFromFile(name)) {
         if (!reader.Error().empty()) {
-            fmt::println(stderr, "TinyObjReader: {}", reader.Error());
+            SPDLOG_ERROR("TinyObjReader: {}", reader.Error());
         }
         return;
     }

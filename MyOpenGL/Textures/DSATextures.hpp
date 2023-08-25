@@ -9,8 +9,9 @@
 #include <string>
 #include <utility>
 
-#include "enums.hpp"
 #include "GLUtils.hpp"
+#include "enums.hpp"
+#include "spdlog-config.hpp"
 
 template<textureType type = textureType::Texture2D>
 class DSATextures {
@@ -22,7 +23,7 @@ public:
     }
 
     ~DSATextures() {
-        if (ids.get() != nullptr){
+        if (ids != nullptr){
             glDeleteTextures(size, ids.get());
         }
     }
@@ -42,7 +43,7 @@ public:
 
         if (loaded_img == nullptr)
         {
-            fmt::println(stderr, "[AttachFromFile] Error loading image file {}", name.native());
+            SPDLOG_ERROR("[AttachFromFile] Error loading image file {}", name.native());
             return;
         }
 
@@ -56,7 +57,7 @@ public:
             SDL_FreeSurface(loaded_img);
             if (formattedSurf == nullptr)
             {
-                fmt::println(stderr, "[AttachFromFile] Error converting image format: {}", SDL_GetError());
+                SPDLOG_ERROR("[AttachFromFile] Error converting image format: {}", SDL_GetError());
                 return;
             }
             loaded_img = formattedSurf;
@@ -65,7 +66,7 @@ public:
         // Áttérés SDL koordinátarendszerről ( (0,0) balfent ) OpenGL textúra-koordinátarendszerre ( (0,0) ballent )
         if constexpr (type != textureType::TextureCubeMap && type != textureType::TextureCubeMapArray) {
             if (invert_image(loaded_img->pitch, loaded_img->h, loaded_img->pixels) == -1) {
-                fmt::println(stderr, "[AttachFromFile] Error transforming image: {}", SDL_GetError());
+                SPDLOG_ERROR("[AttachFromFile] Error transforming image: {}", SDL_GetError());
                 SDL_FreeSurface(loaded_img);
                 return;
             }

@@ -9,22 +9,21 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl2.h>
 
-
-#include <fmt/core.h>
-
 #include "GLDebugMessageCallback.h"
 
 #include "MyApp.hpp"
+#include "spdlog-config.hpp"
 
 int main(int argc, char *args[]) {
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
-        fmt::println("[SDL init] Error while initializing SDL: {}", SDL_GetError());
+        SPDLOG_ERROR("[SDL init] Error while initializing SDL: {}", SDL_GetError());
         return 1;
     }
 
+    SPDLOG_INFO("SDL Init!");
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #ifndef NDEBUG
-
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif
 
@@ -47,13 +46,13 @@ int main(int argc, char *args[]) {
                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (win == nullptr) {
-        fmt::println("[Window creation] Error while initializing SDL: {}", SDL_GetError());
+        SPDLOG_ERROR("[Window creation] Error while initializing SDL: {}", SDL_GetError());
         return 1;
     }
 
     SDL_GLContext context = SDL_GL_CreateContext(win);
     if (context == nullptr) {
-        fmt::println("[OGL context creation] Error while initializing SDL: {}", SDL_GetError());
+        SPDLOG_ERROR("[OGL context creation] Error while initializing SDL: {}", SDL_GetError());
         return 1;
     }
 
@@ -61,20 +60,20 @@ int main(int argc, char *args[]) {
 
     GLenum error = glewInit();
     if (error != GLEW_OK) {
-        fmt::println("[GLEW] Error while init: {}", (char*)glewGetErrorString(error));
+        SPDLOG_ERROR("[GLEW] Error while init: {}", (char*)glewGetErrorString(error));
         return 1;
     }
 
     int glVersion[2] = {-1, -1};
     glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
     glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
-    fmt::println("Running OpenGL {}.{}", glVersion[0], glVersion[1]);
+    SPDLOG_INFO("Running OpenGL {}.{}", glVersion[0], glVersion[1]);
 
     if (glVersion[0] == -1 && glVersion[1] == -1) {
         SDL_GL_DeleteContext(context);
         SDL_DestroyWindow(win);
 
-        fmt::println("[OGL context creation] Could not create OGL context! "
+        SPDLOG_ERROR("[OGL context creation] Could not create OGL context! "
                      "SDL_GL_SetAttribute(...) calls may have wrong settings.");
 
         return 1;

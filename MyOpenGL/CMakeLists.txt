@@ -4,6 +4,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(spdlog REQUIRED)
 
 target_sources(MyOpenGL
         PRIVATE
@@ -50,4 +51,4 @@ target_include_directories(MyOpenGL
         ../libs
 )
 
-target_link_libraries(MyOpenGL PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} fmt)
+target_link_libraries(MyOpenGL PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} spdlog::spdlog)

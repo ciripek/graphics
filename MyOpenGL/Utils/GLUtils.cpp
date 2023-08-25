@@ -1,12 +1,17 @@
 #include "GLUtils.hpp"
 
+#include <SDL_image.h>
+
+#include <fstream>
 #include <memory>
+
+#include "spdlog-config.hpp"
 
 std::optional<std::string> loadFile(const std::filesystem::path &fileName) {
     std::ifstream shaderStream(fileName);
 
     if (!shaderStream.is_open()) {
-        fmt::println(stderr, "Error while loading shader {}!", fileName.native());
+        SPDLOG_ERROR("Error while loading shader {}!", fileName.native());
         return std::nullopt;
     }
 
@@ -26,14 +31,13 @@ GLuint loadShader(GLenum _shaderType, const std::filesystem::path &fileName) {
 
     // ha nem sikerult hibauzenet es -1 visszaadasa
     if (loadedShader == 0) {
-        fmt::println(stderr, "Error while initing shader {} (glCreateShader)!", fileName.native());
+        SPDLOG_ERROR("Error while initing shader {} (glCreateShader)!", fileName.native());
         return 0;
     }
 
     auto file = loadFile(fileName);
     if (!file) {
-
-        fmt::println(stderr, "Error while loading shader {}!", fileName.native());
+        SPDLOG_ERROR("Error while loading shader {}!", fileName.native());
         return 0;
     }
 
@@ -67,7 +71,7 @@ bool errorShader(const GLuint loadedShader) {
         auto errorMessage = std::make_unique<char[]>(infoLogLength);
         glGetShaderInfoLog(loadedShader, infoLogLength, nullptr, errorMessage.get());
 
-        fmt::println("Shader error: {}", errorMessage.get());
+        SPDLOG_ERROR("Shader error: {}", errorMessage.get());
 
         return false;
     }
@@ -90,7 +94,7 @@ GLuint loadProgramVSGSFS(const std::filesystem::path &_fileNameVS, const std::fi
     // linkeljuk ossze a dolgokat
     const GLuint program_ID = glCreateProgram();
 
-    fmt::println(stdout, "Linking program");
+    SPDLOG_INFO("Linking program");
     glAttachShader(program_ID, vs_ID);
     glAttachShader(program_ID, gs_ID);
     glAttachShader(program_ID, fs_ID);
@@ -105,7 +109,7 @@ GLuint loadProgramVSGSFS(const std::filesystem::path &_fileNameVS, const std::fi
     if (GL_FALSE == result) {
         std::vector<char> programErrorMessage(infoLogLength);
         glGetProgramInfoLog(program_ID, infoLogLength, nullptr, programErrorMessage.data());
-        fmt::println("{}", programErrorMessage.data());
+        SPDLOG_ERROR("{}", programErrorMessage.data());
     }
 
     // mar nincs ezekre szukseg
@@ -166,7 +170,7 @@ GLuint TextureFromFile(const char *filename) {
     // Kép betöltése
     SDL_Surface *loaded_img = IMG_Load(filename);
     if (loaded_img == nullptr) {
-        std::cout << "[TextureFromFile] Error while loading texture: " << filename << std::endl;
+        SPDLOG_ERROR("[TextureFromFile] Error while loading texture: {}", filename);
         return 0;
     }
 
@@ -180,14 +184,14 @@ GLuint TextureFromFile(const char *filename) {
     // Átalakítás 32bit RGBA formátumra, ha nem abban volt
     SDL_Surface *formattedSurf = SDL_ConvertSurfaceFormat(loaded_img, format, 0);
     if (formattedSurf == nullptr) {
-        std::cout << "[TextureFromFile] Error while processing texture: " << SDL_GetError() << std::endl;
+        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}",SDL_GetError());
         SDL_FreeSurface(loaded_img);
         return 0;
     }
 
     // Áttérés SDL koordinátarendszerről ( (0,0) balfent ) OpenGL textúra-koordinátarendszerre ( (0,0) ballent )
     if (SDL_InvertSurface(formattedSurf) == -1) {
-        std::cout << "[TextureFromFile] Error while processing texture: " << SDL_GetError() << std::endl;
+        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}", SDL_GetError());
         SDL_FreeSurface(formattedSurf);
         SDL_FreeSurface(loaded_img);
         return 0;
@@ -218,8 +222,8 @@ void TextureFromFileAttach(const char *filename, GLuint role) {
 
     int img_mode = 0;
 
-    if (loaded_img == 0) {
-        std::cout << "[TextureFromFile] Error while loading texture: " << filename << std::endl;
+    if (loaded_img == nullptr) {
+        SPDLOG_ERROR("[TextureFromFile] Error while loading texture: {}", filename);
         return;
     }
 
@@ -256,8 +260,7 @@ std::optional<std::vector<char>> loadBinary(const std::filesystem::path &fileNam
     std::ifstream shaderStream(fileName, std::ios_base::binary);
 
     if (!shaderStream.is_open()) {
-        fmt::println("{}", std::filesystem::current_path().root_path().native());
-        fmt::println(stderr, "Error while loading binary shader {}!", fileName.native());
+        SPDLOG_ERROR("Error while loading binary shader {}!", fileName.native());
         return std::nullopt;
     }
 
@@ -286,7 +289,7 @@ bool errorLink(GLuint program) {
         auto errorMessage = std::make_unique<char[]>(infoLogLength);
         glGetProgramInfoLog(program, infoLogLength, nullptr, errorMessage.get());
 
-        fmt::println("Linker error: {}\n{}", infoLogLength, errorMessage.get());
+        SPDLOG_ERROR("Linker error: {}\n{}", infoLogLength, errorMessage.get());
 
         return false;
     }

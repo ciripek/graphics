@@ -2,7 +2,6 @@ add_library(IMGUI STATIC)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-add_subdirectory("fmt")
 
 target_sources(IMGUI
         PUBLIC
