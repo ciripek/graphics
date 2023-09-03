@@ -57,7 +57,8 @@ public:
             SDL_FreeSurface(loaded_img);
             if (formattedSurf == nullptr)
             {
-                SPDLOG_ERROR("[AttachFromFile] Error converting image format: {}", SDL_GetError());
+                const char* message =  SDL_GetError();
+                SPDLOG_ERROR("[AttachFromFile] Error converting image format: {}", message);
                 return;
             }
             loaded_img = formattedSurf;
@@ -66,7 +67,10 @@ public:
         // Áttérés SDL koordinátarendszerről ( (0,0) balfent ) OpenGL textúra-koordinátarendszerre ( (0,0) ballent )
         if constexpr (type != textureType::TextureCubeMap && type != textureType::TextureCubeMapArray) {
             if (invert_image(loaded_img->pitch, loaded_img->h, loaded_img->pixels) == -1) {
-                SPDLOG_ERROR("[AttachFromFile] Error transforming image: {}", SDL_GetError());
+
+                const char* message =  SDL_GetError();
+
+                SPDLOG_ERROR("[AttachFromFile] Error transforming image: {}", message);
                 SDL_FreeSurface(loaded_img);
                 return;
             }

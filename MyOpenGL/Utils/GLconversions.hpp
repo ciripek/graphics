@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <ranges>
 
 #include <type_traits>
 
@@ -177,11 +178,8 @@ template <typename T>			constexpr GLsizei ContainerLength(const std::vector<T>& 
 Compute the length of the container in _bytes_.
 
 */
-template <typename T>			constexpr GLsizei ContainerSizeInBytes(const T&) { return sizeof(T); }
-template <typename T, size_t N> constexpr GLsizei ContainerSizeInBytes(const std::array<T, N>&) { return N*sizeof(T); }
+template <std::ranges::contiguous_range T> constexpr GLsizei ContainerSizeInBytes(const T& range) { return sizeof(typename T::value_type) * std::ranges::size(range); }
 template <typename T, size_t N> constexpr GLsizei ContainerSizeInBytes(const T(&)[N]) { return N*sizeof(T); }
-template <typename T>			constexpr GLsizei ContainerSizeInBytes(const std::vector<T>& pArr) { return pArr.size()*sizeof(T); }
-
 /*
 
 	Get a pointer to the beginning of the container. In case of non-contagious containers this should involve

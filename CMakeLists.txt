@@ -9,6 +9,7 @@ find_package(GLEW REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(GTest REQUIRED)
 
 
 add_subdirectory(MyOpenGL)
@@ -45,3 +46,23 @@ target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES}
 
 add_shader(${PROJECT_NAME} myFrag.frag)
 add_shader(${PROJECT_NAME} myVert.vert)
+
+enable_testing()
+
+add_executable(
+        MyTest
+        test/test_main.cpp
+        test/MyEnvironment.cpp
+        test/MyEnvironment.hpp
+)
+target_link_libraries(
+        MyTest
+        GTest::gtest_main
+        ${SDL2_IMAGE_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+        ${GLEW_LIBRARIES}
+        MyOpenGL
+)
+
+include(GoogleTest)
+gtest_discover_tests(MyTest)

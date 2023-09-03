@@ -16,7 +16,8 @@
 
 int main(int argc, char *args[]) {
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
-        SPDLOG_ERROR("[SDL init] Error while initializing SDL: {}", SDL_GetError());
+        const char* message = SDL_GetError();
+        SPDLOG_ERROR("[SDL init] Error while initializing SDL: {}", message);
         return 1;
     }
 
@@ -46,13 +47,15 @@ int main(int argc, char *args[]) {
                                        SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (win == nullptr) {
-        SPDLOG_ERROR("[Window creation] Error while initializing SDL: {}", SDL_GetError());
+        const char* message = SDL_GetError();
+        SPDLOG_ERROR("[Window creation] Error while initializing SDL: {}", message);
         return 1;
     }
 
     SDL_GLContext context = SDL_GL_CreateContext(win);
     if (context == nullptr) {
-        SPDLOG_ERROR("[OGL context creation] Error while initializing SDL: {}", SDL_GetError());
+        const char* message = SDL_GetError();
+        SPDLOG_ERROR("[OGL context creation] Error while initializing SDL: {}", message);
         return 1;
     }
 
@@ -60,7 +63,8 @@ int main(int argc, char *args[]) {
 
     GLenum error = glewInit();
     if (error != GLEW_OK) {
-        SPDLOG_ERROR("[GLEW] Error while init: {}", (char*)glewGetErrorString(error));
+        const char * message = reinterpret_cast<const char *>(glewGetErrorString(error));
+        SPDLOG_ERROR("[GLEW] Error while init: {}", message);
         return 1;
     }
 

@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdexcept>
 #include <vector>
+#include <ranges>
 
 #include "GLconversions.hpp"
 #include "spdlog-config.hpp"
@@ -49,18 +50,12 @@ public:
         glNamedBufferStorage(ids[index], size, data, flags);
     }
 
-    template<class T>
-    void storage(const T& data, GLbitfield flags, int index = 0){
-        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
-
-        storage(ContainerSizeInBytes(data), PointerToStart(data), flags, index);
+    void storage(std::ranges::contiguous_range auto const& data, GLbitfield flags, int index = 0){
+        storage(ContainerSizeInBytes(data), std::ranges::data(data), flags, index);
     }
 
-    template<class T>
-    void subData(const T& data, GLintptr offset = 0, int index = 0){
-        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
-
-        subData(ContainerSizeInBytes(data), PointerToStart(data), offset, index);
+    void subData(std::ranges::contiguous_range auto const& data, GLintptr offset = 0, int index = 0){
+        subData(ContainerSizeInBytes(data), std::ranges::data(data), offset, index);
     }
 
     void subData(GLsizeiptr size, const void *data, GLintptr offset = 0, int index = 0){

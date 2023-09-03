@@ -56,29 +56,6 @@ GLuint loadShader(GLenum _shaderType, const std::filesystem::path &fileName) {
     return loadedShader;
 }
 
-bool errorShader(const GLuint loadedShader) {
-    GLint result = GL_FALSE;
-
-    // forditas statuszanak lekerdezese
-    glGetShaderiv(loadedShader, GL_COMPILE_STATUS, &result);
-
-    if (GL_FALSE == result) {
-        // hibauzenet elkerese es kiirasa
-
-        GLint infoLogLength = 0;
-        glGetShaderiv(loadedShader, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-        auto errorMessage = std::make_unique<char[]>(infoLogLength);
-        glGetShaderInfoLog(loadedShader, infoLogLength, nullptr, errorMessage.get());
-
-        SPDLOG_ERROR("Shader error: {}", errorMessage.get());
-
-        return false;
-    }
-
-    return true;
-}
-
 GLuint loadProgramVSGSFS(const std::filesystem::path &_fileNameVS, const std::filesystem::path &_fileNameGS,
                          const std::filesystem::path &_fileNameFS) {
     // a vertex, geometry es fragment shaderek betoltese
@@ -107,9 +84,9 @@ GLuint loadProgramVSGSFS(const std::filesystem::path &_fileNameVS, const std::fi
     glGetProgramiv(program_ID, GL_LINK_STATUS, &result);
     glGetProgramiv(program_ID, GL_INFO_LOG_LENGTH, &infoLogLength);
     if (GL_FALSE == result) {
-        std::vector<char> programErrorMessage(infoLogLength);
-        glGetProgramInfoLog(program_ID, infoLogLength, nullptr, programErrorMessage.data());
-        SPDLOG_ERROR("{}", programErrorMessage.data());
+        char* programErrorMessage = new char[infoLogLength];
+        glGetProgramInfoLog(program_ID, infoLogLength, nullptr, programErrorMessage);
+        SPDLOG_ERROR("{}", programErrorMessage);
     }
 
     // mar nincs ezekre szukseg
@@ -184,14 +161,17 @@ GLuint TextureFromFile(const char *filename) {
     // Átalakítás 32bit RGBA formátumra, ha nem abban volt
     SDL_Surface *formattedSurf = SDL_ConvertSurfaceFormat(loaded_img, format, 0);
     if (formattedSurf == nullptr) {
-        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}",SDL_GetError());
+        const char* message = SDL_GetError();
+        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}", message);
         SDL_FreeSurface(loaded_img);
         return 0;
     }
 
     // Áttérés SDL koordinátarendszerről ( (0,0) balfent ) OpenGL textúra-koordinátarendszerre ( (0,0) ballent )
     if (SDL_InvertSurface(formattedSurf) == -1) {
-        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}", SDL_GetError());
+        const char* message = SDL_GetError();
+
+        SPDLOG_ERROR("[TextureFromFile] Error while processing texture: {}", message);
         SDL_FreeSurface(formattedSurf);
         SDL_FreeSurface(loaded_img);
         return 0;
@@ -274,6 +254,30 @@ std::optional<std::vector<char>> loadBinary(const std::filesystem::path &fileNam
     return shaderCode;
 }
 
+bool errorShader(const GLuint loadedShader) {
+    GLint result = GL_FALSE;
+
+    // forditas statuszanak lekerdezese
+    glGetShaderiv(loadedShader, GL_COMPILE_STATUS, &result);
+
+    if (GL_FALSE == result) {
+        // hibauzenet elkerese es kiirasa
+
+        GLint infoLogLength = 0;
+        glGetShaderiv(loadedShader, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+        char* errorMessage = new char[infoLogLength];
+        glGetShaderInfoLog(loadedShader, infoLogLength, nullptr, errorMessage);
+
+        SPDLOG_ERROR("Shader error: {}", errorMessage);
+
+        delete[] errorMessage;
+        return false;
+    }
+
+    return true;
+}
+
 bool errorLink(GLuint program) {
     GLint isLinked = GL_TRUE;
 
@@ -286,12 +290,14 @@ bool errorLink(GLuint program) {
         GLint infoLogLength = 0;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-        auto errorMessage = std::make_unique<char[]>(infoLogLength);
-        glGetProgramInfoLog(program, infoLogLength, nullptr, errorMessage.get());
+        char* errorMessage = new char[infoLogLength];
+        glGetProgramInfoLog(program, infoLogLength, nullptr, errorMessage);
 
-        SPDLOG_ERROR("Linker error: {}\n{}", infoLogLength, errorMessage.get());
+        SPDLOG_ERROR("Linker error: {}\n{}", infoLogLength, errorMessage);
 
+        delete[] errorMessage;
         return false;
     }
 
-    return true;}
+    return true;
+}

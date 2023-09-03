@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <ranges>
 
 #include <utility>
 
@@ -11,7 +12,7 @@ template<BufferType Target, BufferStorageUsage Usage>
 class DSABufferStatic {
 public:
     DSABufferStatic() { glCreateBuffers(1, &m_id); }
-    ~DSABufferStatic() { glDeleteBuffers(1, &m_id); }
+    ~DSABufferStatic() { clean();}
 
     DELETE_COPY(DSABufferStatic)
 
@@ -28,21 +29,22 @@ public:
     }
 
     void clean() {
-        if (m_id != 0 && m_sizeInBytes != 0) {
+        if (m_id != 0) {
             glDeleteBuffers(1, &m_id);
+            m_id = 0;
+            m_sizeInBytes = 0;
         }
     }
 
-    void storage(GLsizeiptr size, const void* data) const{
+    void storage(GLsizeiptr size, const void* data){
+        m_sizeInBytes = size;
         glNamedBufferStorage(m_id, size, data, static_cast<GLbitfield>(Usage));
     }
 
 
-    template<class T>
-    void storage(const T &data) const{
-        static_assert(HasContiguousStorage_V<T>, "Wrong Type of data container");
-
-        storage(ContainerSizeInBytes(data), PointerToStart(data));
+    template<std::ranges::contiguous_range T>
+    void storage(const T &data){
+        storage(ContainerSizeInBytes(data), std::ranges::data(data));
     }
     template<class T>
     void subData(const T &data, GLintptr offset = 0) const{
@@ -74,7 +76,21 @@ public:
         return Usage;
     };
 
+    operator GLuint() const {
+        return m_id;
+    };
+
+    template<typename T>
+    operator std::vector<T>()
+    {
+        T* ptr = static_cast<T*>(glMapNamedBuffer(m_id, GL_READ_ONLY));
+
+        std::vector<T> ret(ptr, ptr + m_sizeInBytes / sizeof(T));
+        glUnmapNamedBuffer(m_id);
+        return ret;
+    }
+
 private:
     GLuint m_id = 0;
-    GLsizeiptr m_sizeInBytes = 0;
+    GLuint m_sizeInBytes = 0;
 };
