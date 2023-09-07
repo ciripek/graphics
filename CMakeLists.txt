@@ -13,7 +13,6 @@ find_package(GTest REQUIRED)
 
 
 add_subdirectory(MyOpenGL)
-
 add_subdirectory("libs")
 
 function(add_shader TARGET SHADER)
@@ -38,7 +37,8 @@ function(add_shader TARGET SHADER)
     target_sources(${TARGET} PRIVATE ${current-output-path})
 endfunction(add_shader)
 
-add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES})
+add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES}
+        test/test_cases/DSABufferStaticTest.hpp)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS}
         ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${EXTERNAL} libs)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES}
@@ -54,6 +54,13 @@ add_executable(
         test/test_main.cpp
         test/MyEnvironment.cpp
         test/MyEnvironment.hpp
+        test/test_cases/DSABufferStaticTest.hpp
+)
+
+target_include_directories(
+        MyTest
+        PRIVATE
+        test/test_cases
 )
 target_link_libraries(
         MyTest

@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "ShaderObject.h"
 
@@ -13,56 +12,60 @@
 #include <initializer_list>
 #include <utility>
 
-class ProgramObject final
-{
-public:
-	using Binding = std::pair<int, const char*>;
+class ProgramObject final {
+ public:
+  using Binding = std::pair<int, const char*>;
 
-	ProgramObject();
-	~ProgramObject();
+  ProgramObject();
+  ~ProgramObject();
 
-	ProgramObject(std::initializer_list<ShaderObject>, std::initializer_list< Binding > = {}, std::initializer_list< Binding > = {});
+  ProgramObject(std::initializer_list<ShaderObject>,
+                std::initializer_list<Binding> = {},
+                std::initializer_list<Binding> = {});
 
-	ProgramObject(const ProgramObject&)				= delete;
-	ProgramObject& operator=(const ProgramObject&)	= delete;
+  ProgramObject(const ProgramObject&) = delete;
+  ProgramObject& operator=(const ProgramObject&) = delete;
 
-	ProgramObject(ProgramObject&& rhs);
-	ProgramObject& operator=(ProgramObject&& rhs);
+  ProgramObject(ProgramObject&& rhs);
+  ProgramObject& operator=(ProgramObject&& rhs);
 
-	operator unsigned int() const { return m_id; }
+  operator unsigned int() const { return m_id; }
 
-	bool Init(std::initializer_list<ShaderObject>, std::initializer_list< Binding > = {}, std::initializer_list< Binding > = {});
-	void Clean();
+  bool Init(std::initializer_list<ShaderObject>,
+            std::initializer_list<Binding> = {},
+            std::initializer_list<Binding> = {});
+  void Clean();
 
-	ProgramObject& AttachShader(const ShaderObject&);
-	ProgramObject& AttachShaders(std::initializer_list<ShaderObject>);
+  ProgramObject& AttachShader(const ShaderObject&);
+  ProgramObject& AttachShaders(std::initializer_list<ShaderObject>);
 
-	void BindAttribLocation(int, const char*) const;
-	void BindAttribLocations( std::initializer_list< Binding > ) const;
+  void BindAttribLocation(int, const char*) const;
+  void BindAttribLocations(std::initializer_list<Binding>) const;
 
-	void BindFragDataLocation(int, const char*) const;
-	void BindFragDataLocations(std::initializer_list< Binding >) const;
+  void BindFragDataLocation(int, const char*) const;
+  void BindFragDataLocations(std::initializer_list<Binding>) const;
 
-	bool LinkProgram();
+  bool LinkProgram();
 
-	void SetTexture(const char* _uniform, int _sampler, GLuint _textureID);
-	void SetCubeTexture(const char* _uniform, int _sampler, GLuint _textureID);
+  void SetTexture(const char* _uniform, int _sampler, GLuint _textureID);
+  void SetCubeTexture(const char* _uniform, int _sampler, GLuint _textureID);
 
-	template<typename U, typename T>
-	void SetUniform(U _uniform, const T& pArr);
+  template <typename U, typename T>
+  void SetUniform(U _uniform, const T& pArr);
 
-	GLint	GetLocation(const char* _uniform);
+  GLint GetLocation(const char* _uniform);
 
-	void Use() const;
-	void Unuse() const;
-private:
-	GLuint m_id;
+  void Use() const;
+  void Unuse() const;
 
-	std::unordered_map< std::string, GLint >	m_map_uniform_locations;
-	std::vector< GLuint >						m_list_shaders_attached;
+ private:
+  GLuint m_id;
 
-	GLint GLResolveUniformLocation(GLint _uniform);
-	GLint GLResolveUniformLocation(const char* _uniform);
+  std::unordered_map<std::string, GLint> m_map_uniform_locations;
+  std::vector<GLuint> m_list_shaders_attached;
+
+  GLint GLResolveUniformLocation(GLint _uniform);
+  GLint GLResolveUniformLocation(const char* _uniform);
 };
 
 #include "ProgramObject.inl"

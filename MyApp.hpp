@@ -15,51 +15,47 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "gCamera.h"
-#include "enums.hpp"
-#include "ShaderProgram.hpp"
-#include "ProgramPipelines.hpp"
-#include "Model.hpp"
 #include "DSABufferStatic.hpp"
 #include "DSABufferStaticArray.hpp"
+#include "Model.hpp"
+#include "ProgramPipelines.hpp"
+#include "ShaderProgram.hpp"
+#include "enums.hpp"
+#include "gCamera.h"
 
-class CMyApp
-{
-public:
-	CMyApp();
-	~CMyApp();
+class CMyApp {
+ public:
+  CMyApp();
+  ~CMyApp();
 
-    DELETE_COPY(CMyApp)
-    DEFAULT_MOVE(CMyApp)
+  DELETE_COPY(CMyApp)
+  DEFAULT_MOVE(CMyApp)
 
-	bool Init();
-	void Clean();
+  bool Init();
+  void Clean();
 
-	void Update();
-	void Render();
+  void Update();
+  void Render();
 
-	void KeyboardDown(SDL_KeyboardEvent&);
-	void KeyboardUp(SDL_KeyboardEvent&);
-	void MouseMove(SDL_MouseMotionEvent&);
-	void MouseDown(SDL_MouseButtonEvent&);
-	void MouseUp(SDL_MouseButtonEvent&);
-	void MouseWheel(SDL_MouseWheelEvent&);
-	void Resize(int, int);
+  void KeyboardDown(SDL_KeyboardEvent&);
+  void KeyboardUp(SDL_KeyboardEvent&);
+  void MouseMove(SDL_MouseMotionEvent&);
+  void MouseDown(SDL_MouseButtonEvent&);
+  void MouseUp(SDL_MouseButtonEvent&);
+  void MouseWheel(SDL_MouseWheelEvent&);
+  void Resize(int, int);
 
-private:
-	gCamera m_camera;
-    ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/myVert.vert.spv");
-    ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/myFrag.frag.spv");
-    ProgramPipeline programPipelines;
+ private:
+  gCamera m_camera;
+  ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/myVert.vert.spv");
+  ShaderProgram fragment = ShaderProgram::fromSPIRV("shaders/myFrag.frag.spv");
+  ProgramPipeline programPipelines;
 
+  Model model{"assets/hammerhead.obj"};
 
-    Model model {"assets/hammerhead.obj"};
-
-    struct Vertex
-	{
-		glm::vec3 p;
-		glm::vec3 n;
-		glm::vec2 t;
-	};
+  struct Vertex {
+    glm::vec3 p;
+    glm::vec3 n;
+    glm::vec2 t;
+  };
 };
-
