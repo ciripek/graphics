@@ -9,7 +9,7 @@ find_package(spdlog REQUIRED)
 target_sources(MyOpenGL
         PRIVATE
         BufferObjects/DSABuffers.cpp
-        FrameBuffers/DSAFrameBuffer.cpp
+        FrameBuffers/DSAFrameBuffers.cpp
         Mesh/DSAMesh.cpp
         Mesh/Mesh.cpp
         Utils/GLconversions.cpp
@@ -27,6 +27,7 @@ target_sources(MyOpenGL
         Shaders/ShaderProgram.cpp
         Shaders/ShaderProgramUniform.cpp
         Programs/ProgramObject.cpp
+        Programs/ProgramPipeline.cpp
 )
 target_include_directories(MyOpenGL
         PUBLIC

@@ -18,7 +18,7 @@
 #include "DSABufferStatic.hpp"
 #include "DSABufferStaticArray.hpp"
 #include "Model.hpp"
-#include "ProgramPipelines.hpp"
+#include "ProgramPipeline.hpp"
 #include "ShaderProgram.hpp"
 #include "enums.hpp"
 #include "gCamera.h"

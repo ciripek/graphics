@@ -17,7 +17,7 @@ TEST(DSABufferStatic, storage) {
   std::iota(CPUvec.begin(), CPUvec.end(), 0);
 
   bufferStatic.storage(CPUvec);
-  std::vector<GLint> GPUvec = bufferStatic;
+  std::vector<GLint> GPUvec = bufferStatic.getAsVector<GLint>();
 
   ASSERT_TRUE(std::ranges::equal(CPUvec, GPUvec));
 }
@@ -31,7 +31,7 @@ TEST(DSABufferStatic, subdata) {
   std::iota(CPUvec.begin(), CPUvec.end(), 0);
 
   bufferStatic.storage(CPUvec);
-  std::vector<GLint> GPUvec = bufferStatic;
+  std::vector<GLint> GPUvec = bufferStatic.getAsVector<GLint>();
 
   ASSERT_TRUE(std::ranges::equal(CPUvec, GPUvec));
 
@@ -39,6 +39,6 @@ TEST(DSABufferStatic, subdata) {
   std::iota(CPUvec2.begin(), CPUvec2.end(), 1000);
 
   bufferStatic.subData(CPUvec2);
-  std::vector<GLint> GPU2vec = bufferStatic;
+  std::vector<GLint> GPU2vec = bufferStatic.getAsVector<GLint>();
   ASSERT_TRUE(std::ranges::equal(CPUvec2, GPU2vec));
 }

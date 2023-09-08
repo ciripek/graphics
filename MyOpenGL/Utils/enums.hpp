@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <type_traits>
+
 #define DELETE_COPY(classname)          \
   classname(const classname&) = delete; \
   classname& operator=(const classname&) = delete;

@@ -55,6 +55,7 @@ add_executable(
         test/MyEnvironment.cpp
         test/MyEnvironment.hpp
         test/test_cases/DSABufferStaticTest.hpp
+        test/test_cases/ProgramPipelineTest.hpp
 )
 
 target_include_directories(

@@ -4,16 +4,16 @@
 
 #include <memory>
 
-class DSAFrameBuffer {
+class DSAFrameBuffers {
  public:
-  DSAFrameBuffer() = default;
+  DSAFrameBuffers() = default;
 
-  explicit DSAFrameBuffer(int num)
+  explicit DSAFrameBuffers(int num)
       : ids(std::make_unique<GLuint[]>(num)), num(num) {
     glCreateFramebuffers(num, ids.get());
   }
 
-  ~DSAFrameBuffer() {
+  ~DSAFrameBuffers() {
     if (ids) {
       glDeleteFramebuffers(num, ids.get());
     }

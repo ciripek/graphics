@@ -14,12 +14,11 @@ class ProgramPipelines {
 
   ~ProgramPipelines() { glDeleteProgramPipelines(size, ids.data()); }
 
-  ProgramPipelines(const ProgramPipelines&) = delete;
-  ProgramPipelines& operator=(const ProgramPipelines&) = delete;
+  DELETE_COPY(ProgramPipelines);
 
   ProgramPipelines(ProgramPipelines&& other) noexcept
       : ids(std::exchange(other.ids, {})) {}
-  
+
   ProgramPipelines& operator=(ProgramPipelines&& other) noexcept {
     if (this != &other) {
       ids = std::exchange(other.ids, {});
@@ -46,5 +45,3 @@ class ProgramPipelines {
  private:
   std::array<GLuint, size> ids;
 };
-
-using ProgramPipeline = ProgramPipelines<1>;

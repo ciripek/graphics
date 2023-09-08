@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include "DSABufferStaticTest.hpp"
+#include "ProgramPipelineTest.hpp"
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
