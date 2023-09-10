@@ -120,7 +120,7 @@ int main(int argc, char* args[]) {
     if (!app.Init()) {
       SDL_GL_DeleteContext(context);
       SDL_DestroyWindow(win);
-      fmt::println("[app.Init] Error while app init!");
+      SPDLOG_ERROR("[app.Init] Error while app init!");
       return 1;
     }
     int width, height;

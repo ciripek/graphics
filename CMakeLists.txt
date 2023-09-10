@@ -44,8 +44,8 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS}
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} MyOpenGL IMGUI spdlog::spdlog)
 
-add_shader(${PROJECT_NAME} myFrag.frag)
-add_shader(${PROJECT_NAME} myVert.vert)
+add_shader(${PROJECT_NAME} fragment.frag)
+add_shader(${PROJECT_NAME} vertex.vert)
 
 enable_testing()
 
