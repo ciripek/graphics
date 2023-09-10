@@ -40,10 +40,11 @@ class DSATextures {
   void AttachFromFile(const std::filesystem::path& name,
                       bool generateMipMap = true,
                       int index = 0) {
-    SDL_Surface* loaded_img = IMG_Load(name.c_str());
+    SPDLOG_INFO(LOG_STRING("Loading image from {}"), name.native());
+    SDL_Surface* loaded_img = IMG_Load(name.string().c_str());
 
     if (loaded_img == nullptr) {
-      SPDLOG_ERROR("[AttachFromFile] Error loading image file {}",
+      SPDLOG_ERROR(LOG_STRING("[AttachFromFile] Error loading image file {}"),
                    name.native());
       return;
     }

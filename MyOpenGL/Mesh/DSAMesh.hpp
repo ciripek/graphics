@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "Material.hpp"
 #include "ShaderProgram.hpp"
 #include "tiny_obj_loader.h"
 

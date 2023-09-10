@@ -13,6 +13,9 @@
 #include "spdlog-config.hpp"
 
 int main(int argc, char* args[]) {
+  SPDLOG_INFO(LOG_STRING("Current Working directory :{}"),
+              std::filesystem::current_path().native());
+
   if (SDL_Init(SDL_INIT_VIDEO) == -1) {
     const char* message = SDL_GetError();
     SPDLOG_ERROR("[SDL init] Error while initializing SDL: {}", message);

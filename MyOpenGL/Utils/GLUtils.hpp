@@ -7,7 +7,6 @@
 #include <filesystem>
 #include <optional>
 #include <vector>
-
 std::optional<std::string> loadFile(const std::filesystem::path& fileName);
 std::optional<std::vector<char>> loadBinary(
     const std::filesystem::path& fileName);

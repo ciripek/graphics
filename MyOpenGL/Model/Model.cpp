@@ -16,7 +16,7 @@
 void Model::loadModel(const std::filesystem::path& name) {
   tinyobj::ObjReader reader;
 
-  if (!reader.ParseFromFile(name)) {
+  if (!reader.ParseFromFile(name.string())) {
     if (!reader.Error().empty()) {
       SPDLOG_ERROR("TinyObjReader: {}", reader.Error());
     }
@@ -29,7 +29,7 @@ void Model::loadModel(const std::filesystem::path& name) {
 
   loadTextures(material, name.parent_path());
   buffers = DSABuffers(shapes.size() * 2);
-  count.reserve(shapes.size() * 2);
+  count.resize(shapes.size() * 2);
 
   for (int i = 0; const auto& shape : shapes) {
     loadShape(attrib, shape, i);

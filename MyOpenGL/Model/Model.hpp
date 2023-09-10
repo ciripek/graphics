@@ -2,7 +2,6 @@
 
 #include <fmt/core.h>
 
-#include <assimp/scene.h>
 #include <filesystem>
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>

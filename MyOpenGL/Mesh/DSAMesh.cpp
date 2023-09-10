@@ -1,6 +1,5 @@
 #include "DSAMesh.hpp"
 
-#include <assimp/scene.h>
 #include "ShaderProgram.hpp"
 
 DSAMesh::DSAMesh() = default;

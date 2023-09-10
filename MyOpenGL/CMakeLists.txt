@@ -20,7 +20,6 @@ target_sources(MyOpenGL
         Mesh/DSAMesh.cpp
         Mesh/Mesh.cpp
         Model/Model.cpp
-        Model/Material.cpp
         VertexArrays/VertexArrayObject.cpp
         Loaders/ObjParser.cpp
         Shaders/ShaderObject.cpp

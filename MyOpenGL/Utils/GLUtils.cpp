@@ -10,7 +10,8 @@
 std::optional<std::string> loadFile(const std::filesystem::path& fileName) {
   std::ifstream shaderStream(fileName);
   if (!shaderStream.is_open()) {
-    SPDLOG_ERROR("Error while loading shader {}!", fileName.native());
+    SPDLOG_ERROR(LOG_STRING("Error while loading shader {}!"),
+                 fileName.native());
     return std::nullopt;
   }
 
@@ -30,14 +31,15 @@ GLuint loadShader(GLenum _shaderType, const std::filesystem::path& fileName) {
 
   // ha nem sikerult hibauzenet es -1 visszaadasa
   if (loadedShader == 0) {
-    SPDLOG_ERROR("Error while initing shader {} (glCreateShader)!",
+    SPDLOG_ERROR(LOG_STRING("Error while initing shader {} (glCreateShader)!"),
                  fileName.native());
     return 0;
   }
 
   auto file = loadFile(fileName);
   if (!file) {
-    SPDLOG_ERROR("Error while loading shader {}!", fileName.native());
+    SPDLOG_ERROR(LOG_STRING("Error while loading shader {}!"),
+                 fileName.native());
     return 0;
   }
 
@@ -236,7 +238,8 @@ std::optional<std::vector<char>> loadBinary(
   std::ifstream shaderStream(fileName, std::ios_base::binary);
 
   if (!shaderStream.is_open()) {
-    SPDLOG_ERROR("Error while loading binary shader {}!", fileName.native());
+    SPDLOG_ERROR(LOG_STRING("Error while loading binary shader {}!"),
+                 fileName.native());
     return std::nullopt;
   }
 
@@ -285,6 +288,11 @@ bool errorLink(GLuint program) {
 
     GLint infoLogLength = 0;
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+    if (infoLogLength == 0) {
+      SPDLOG_ERROR("The error message size is zero!");
+      return false;
+    }
 
     char* errorMessage = new char[infoLogLength];
     glGetProgramInfoLog(program, infoLogLength, nullptr, errorMessage);
