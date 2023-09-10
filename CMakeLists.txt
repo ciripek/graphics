@@ -8,14 +8,12 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(GTest REQUIRED)
 
+
+add_subdirectory(MyOpenGL)
 add_subdirectory("libs")
-
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/includes/*.cpp
-        ${PROJECT_SOURCE_DIR}/includes/*.hpp
-        ${PROJECT_SOURCE_DIR}/includes/*.inl)
-
-set(EXTERNAL IMGUI fmt)
 
 function(add_shader TARGET SHADER)
     find_program(GLSLC glslc)
@@ -39,9 +37,40 @@ function(add_shader TARGET SHADER)
     target_sources(${TARGET} PRIVATE ${current-output-path})
 endfunction(add_shader)
 
-add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES})
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIRS} ${EXTERNAL} libs)
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${ASSIMP_LIBRARIES} ${EXTERNAL})
+add_executable(${PROJECT_NAME} main.cpp MyApp.cpp MyApp.hpp ${SRC_FILES}
+        test/test_cases/DSABufferStaticTest.hpp)
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS}
+        ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${EXTERNAL} libs)
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES}
+        ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} MyOpenGL IMGUI spdlog::spdlog)
 
-add_shader(${PROJECT_NAME} fragment.frag)
-add_shader(${PROJECT_NAME} vertex.vert)
+add_shader(${PROJECT_NAME} myFrag.frag)
+add_shader(${PROJECT_NAME} myVert.vert)
+
+enable_testing()
+
+add_executable(
+        MyTest
+        test/test_main.cpp
+        test/MyEnvironment.cpp
+        test/MyEnvironment.hpp
+        test/test_cases/DSABufferStaticTest.hpp
+        test/test_cases/ProgramPipelineTest.hpp
+)
+
+target_include_directories(
+        MyTest
+        PRIVATE
+        test/test_cases
+)
+target_link_libraries(
+        MyTest
+        GTest::gtest_main
+        ${SDL2_IMAGE_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+        ${GLEW_LIBRARIES}
+        MyOpenGL
+)
+
+include(GoogleTest)
+gtest_discover_tests(MyTest)

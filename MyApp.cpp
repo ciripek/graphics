@@ -2,28 +2,31 @@
 
 #include <imgui.h>
 
-#include <array>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <fmt/ranges.h>
+#include "DSABuffers.hpp"
+#include "DSATextures.hpp"
 
 CMyApp::CMyApp() {
-    m_camera.SetView(glm::vec3(-32, 67, 71), glm::vec3(0), glm::vec3(0, 1, 0));
+  m_camera.SetView(glm::vec3(120), glm::vec3(0), glm::vec3(0, 1, 0));
 }
 
 CMyApp::~CMyApp() = default;
 
 bool CMyApp::Init() {
-    if (!vertex.isValid()) return false;
-    if (!fragment.isValid()) return false;
+  if (!(vertex.isValid() && fragment.isValid())) {
+    return false;
+  }
 
-    glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
+  vertex.cacheUniforms();
+  fragment.cacheUniforms();
 
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
+  glClearColor(0.125F, 0.25F, 0.5F, 1.0F);
 
-    m_camera.SetProj(glm::radians(60.0f), 640.0f / 480.0f, 0.01f, 1000.0f);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_DEPTH_TEST);
 
+  m_camera.SetProj(glm::radians(60.0F), 640.0F / 480.0F, 0.01F, 1000.0F);
+
+  return true;
     setUpBuffers();
 
     auto ag = std::to_array<Material>({
@@ -50,6 +53,7 @@ bool CMyApp::Init() {
     return true;
 }
 
+void CMyApp::Clean() {}
 void CMyApp::setUpBuffers() {
     constexpr auto rectangleBuffer = std::to_array<glm::vec2>(
             {
@@ -83,12 +87,12 @@ void CMyApp::Clean() {
 }
 
 void CMyApp::Update() {
-    static Uint64 last_time = SDL_GetTicks64();
-    const float delta_time = (SDL_GetTicks64() - last_time) / 1000.0f;
+  static Uint64 last_time = SDL_GetTicks64();
+  const float delta_time = (float)(SDL_GetTicks64() - last_time) / 1000.0F;
 
-    m_camera.Update(delta_time);
+  m_camera.Update(delta_time);
 
-    last_time = SDL_GetTicks();
+  last_time = SDL_GetTicks();
 }
 
 void CMyApp::Render() {
@@ -135,31 +139,28 @@ void CMyApp::renderImgui() {
 
 }
 
-void CMyApp::KeyboardDown(SDL_KeyboardEvent &key) {
-    m_camera.KeyboardDown(key);
+void CMyApp::KeyboardDown(SDL_KeyboardEvent& key) {
+  m_camera.KeyboardDown(key);
 }
 
-void CMyApp::KeyboardUp(SDL_KeyboardEvent &key) {
-    m_camera.KeyboardUp(key);
+void CMyApp::KeyboardUp(SDL_KeyboardEvent& key) {
+  m_camera.KeyboardUp(key);
 }
 
-void CMyApp::MouseMove(SDL_MouseMotionEvent &mouse) {
-    m_camera.MouseMove(mouse);
+void CMyApp::MouseMove(SDL_MouseMotionEvent& mouse) {
+  m_camera.MouseMove(mouse);
 }
 
-void CMyApp::MouseDown(SDL_MouseButtonEvent &mouse) {
-}
+void CMyApp::MouseDown(SDL_MouseButtonEvent& mouse) {}
 
-void CMyApp::MouseUp(SDL_MouseButtonEvent &mouse) {
-}
+void CMyApp::MouseUp(SDL_MouseButtonEvent& mouse) {}
 
-void CMyApp::MouseWheel(SDL_MouseWheelEvent &wheel) {
-}
+void CMyApp::MouseWheel(SDL_MouseWheelEvent& wheel) {}
 
-void CMyApp::Resize(int _w, int _h) {
-    glViewport(0, 0, _w, _h);
-    window_size = {_w, _h};
-    m_camera.Resize(_w, _h);
+void CMyApp::Resize(int width, int height) {
+    glViewport(0, 0, width, height);
+    window_size = {width, height};
+    m_camera.Resize(width, height);
 
     aspect = window_size.x / window_size.y;
     fovx = 2 * std::atan(std::tan(fovy / 2) * aspect);
