@@ -9,7 +9,7 @@
 #include <array>
 #include <cmath>
 
-#include "DSAVertexArray.hpp"
+#include "DSAVertexArrays.hpp"
 #include "ProgramPipelines.hpp"
 
 CMyApp::CMyApp() {
@@ -63,11 +63,11 @@ bool CMyApp::Init() {
        0.6},
   });
 
-  buffer.storage(circlesBuffer, GL_DYNAMIC_STORAGE_BIT, 2);
-  buffer.bindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, 2);
+  spheres_ssbo.storage(circlesBuffer);
+  spheres_ssbo.bindBufferBase(0);
 
-  buffer.storage(material_array, 0, 3);
-  buffer.bindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, 3);
+  materials_ssbo.storage(material_array);
+  materials_ssbo.bindBufferBase(1);
 
   fragment.cacheUniforms();
 
@@ -93,8 +93,8 @@ void CMyApp::setUpBuffers() {
       3U,
   });
 
-  buffer.storage(rectangleBuffer, 0, 0);
-  buffer.storage(rectangleIndex, 0, 1);
+  window_buffer.storage(rectangleBuffer);
+  window_index_buffer.storage(rectangleIndex);
 
   vao.init({
       {.attribindex = 0,
@@ -105,8 +105,8 @@ void CMyApp::setUpBuffers() {
        .bindingindex = 0},
   });
 
-  vao.vertexArrayVertexBuffer(0, buffer[0], 0, sizeof(glm::vec2));
-  vao.vertexArrayElementBuffer(buffer[1]);
+  vao.vertexArrayVertexBuffer(0, window_buffer, 0, sizeof(glm::vec2));
+  vao.vertexArrayElementBuffer(window_index_buffer);
 }
 
 void CMyApp::Update() {
@@ -133,11 +133,11 @@ void CMyApp::Render() {
   fragment.setUniform("fovx", fovx);
   fragment.setUniform("reflection", reflect);
 
-  buffer.subData(circlesBuffer, 0, 2);
+  spheres_ssbo.subData(circlesBuffer);
 
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
-  DSAVertexArrays::unbind();
+  DSAVertexArray::unbind();
   ProgramPipeline::unbind();
 
   renderImgui();

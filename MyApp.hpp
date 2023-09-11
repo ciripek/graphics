@@ -6,6 +6,7 @@
 #include <array>
 #include <cmath>
 
+#include "DSABufferStatic.hpp"
 #include "DSABuffers.hpp"
 #include "DSAVertexArray.hpp"
 #include "ProgramPipeline.hpp"
@@ -37,8 +38,15 @@ class CMyApp {
 
  private:
   gCamera m_camera;
-  DSABuffers buffer{4};
-  DSAVertexArrays vao{1};
+
+  ArrayBufferStatic<BufferStorageUsage::Zero> window_buffer;
+  IndexBufferStatic<BufferStorageUsage::Zero> window_index_buffer;
+
+  ShaderStorageBufferStatic<BufferStorageUsage::DynamicStorageBit> spheres_ssbo;
+  ShaderStorageBufferStatic<BufferStorageUsage::DynamicStorageBit>
+      materials_ssbo;
+
+  DSAVertexArray vao;
 
   ShaderProgram vertex = ShaderProgram::fromSPIRV("shaders/vertex.vert.spv");
   ShaderProgram fragment =
