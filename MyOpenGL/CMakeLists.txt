@@ -21,6 +21,7 @@ target_sources(MyOpenGL
         Mesh/Mesh.cpp
         Model/Model.cpp
         VertexArrays/VertexArrayObject.cpp
+        VertexArrays/DSAVertexArray.cpp
         Loaders/ObjParser.cpp
         Shaders/ShaderObject.cpp
         Shaders/ShaderProgram.cpp

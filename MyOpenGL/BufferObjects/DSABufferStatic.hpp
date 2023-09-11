@@ -92,3 +92,13 @@ class DSABufferStatic {
   GLuint m_id = 0;
   GLuint m_sizeInBytes = 0;
 };
+
+template <BufferStorageUsage Usage>
+using ArrayBufferStatic = DSABufferStatic<BufferType::Array, Usage>;
+
+template <BufferStorageUsage Usage>
+using IndexBufferStatic = DSABufferStatic<BufferType::ElementArray, Usage>;
+
+template <BufferStorageUsage Usage>
+using ShaderStorageBufferStatic =
+    DSABufferStatic<BufferType::ShaderStorage, Usage>;

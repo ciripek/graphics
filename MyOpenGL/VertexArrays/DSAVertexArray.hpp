@@ -2,12 +2,10 @@
 
 #include <GL/glew.h>
 
-#include <initializer_list>
-#include <memory>
-
+#include "DSABufferStatic.hpp"
 #include "enums.hpp"
 
-class DSAVertexArrays {
+class DSAVertexArray {
  public:
   struct VertexInfo {
     GLuint attribindex;
@@ -17,63 +15,44 @@ class DSAVertexArrays {
     GLuint relativeoffset;
     GLuint bindingindex;
   };
-  DELETE_COPY(DSAVertexArrays)
-  DEFAULT_MOVE(DSAVertexArrays)
 
-  explicit DSAVertexArrays(int num)
-      : ids(std::make_unique<GLuint[]>(num)), num(num) {
-    glCreateVertexArrays(num, ids.get());
-  }
+  DELETE_COPY(DSAVertexArray)
 
-  ~DSAVertexArrays() { glDeleteVertexArrays(num, ids.get()); }
+  DSAVertexArray();
+  ~DSAVertexArray();
 
-  void enableVertexArrayAttrib(GLuint index, int i = 0) {
-    glEnableVertexArrayAttrib(ids[i], index);
-  }
+  DSAVertexArray(DSAVertexArray&&) noexcept;
+  DSAVertexArray& operator=(DSAVertexArray&&) noexcept;
 
-  void vertexArrayAttribBinding(GLuint attribindex,
-                                GLuint bindingindex,
-                                int i = 0) {
-    glVertexArrayAttribBinding(ids[i], attribindex, bindingindex);
-  }
+  void clean() const;
+
+  void enableVertexArrayAttrib(GLuint index) const;
+
+  void vertexArrayAttribBinding(GLuint attribindex, GLuint bindingindex) const;
 
   void vertexArrayAttribFormat(GLuint attribindex,
                                GLint size,
                                GLenum type,
                                GLboolean normalized,
-                               GLuint relativeoffset,
-                               int i = 0) {
-    glVertexArrayAttribFormat(ids[i], attribindex, size, type, normalized,
-                              relativeoffset);
-  }
+                               GLuint relativeoffset) const;
 
-  void init(std::initializer_list<VertexInfo> vertexInfos, int i = 0) {
-    for (const auto& vertexInfo : vertexInfos) {
-      enableVertexArrayAttrib(vertexInfo.attribindex);
-      vertexArrayAttribBinding(vertexInfo.attribindex, vertexInfo.bindingindex);
-      vertexArrayAttribFormat(vertexInfo.attribindex, vertexInfo.size,
-                              vertexInfo.type, vertexInfo.normalized,
-                              vertexInfo.relativeoffset, i);
-    }
-  }
+  void init(std::initializer_list<VertexInfo> vertexInfos) const;
 
   void vertexArrayVertexBuffer(GLuint bindingindex,
                                GLuint buffer,
                                GLintptr offset,
-                               GLsizei stride,
-                               int i = 0) {
-    glVertexArrayVertexBuffer(ids[i], bindingindex, buffer, offset, stride);
+                               GLsizei stride) const;
+
+  template <BufferStorageUsage Usage>
+  void vertexArrayElementBuffer(
+      const IndexBufferStatic<Usage>& index_buffer) const {
+    glVertexArrayElementBuffer(id, index_buffer);
   }
 
-  void vertexArrayElementBuffer(GLuint buffer, int i = 0) {
-    glVertexArrayElementBuffer(ids[0], buffer);
-  }
+  void bind() const;
 
-  void bind(int i = 0) { glBindVertexArray(ids[i]); }
-
-  static void unbind() { glBindVertexArray(0); }
+  static void unbind();
 
  private:
-  std::unique_ptr<GLuint[]> ids;
-  int num = 0;
+  GLuint id = 0;
 };
