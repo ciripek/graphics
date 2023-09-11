@@ -9,7 +9,7 @@
 #ifdef _MSC_VER
 #define LOG_STRING(string) L##string
 #else
-#define  LOG_STRING(string) ##string
+#define  LOG_STRING(string) string
 #endif
 
 #include <spdlog/spdlog.h>
